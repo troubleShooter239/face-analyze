@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: face-analyze-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: super-user
+      POSTGRES_PASSWORD: super-password
+      POSTGRES_DB: face-analyze
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
