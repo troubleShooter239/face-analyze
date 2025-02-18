@@ -3,11 +3,13 @@ from typing import Any
 from fastapi import APIRouter
 from pydantic import EmailStr
 from sqlalchemy import select
+from sqlalchemy.exc import NoResultFound
 from starlette import status
 
 from src.dependencies import db_d, is_admin_d
 from src.models import Admin
 from src.schemas.admins import AddAdminRequest
+from src.services.crud import delete, update, read_all, read, create
 from src.services.security import pwd_context
 from src.utils.exceptions import EntityAlreadyExists, InvalidField, UserNotFound
 from src.utils.logger import logger
@@ -45,10 +47,8 @@ async def add_admin(r: AddAdminRequest, db: db_d) -> None:
         logger.info('Existing user found')
         raise EntityAlreadyExists()
 
-    new_admin = Admin(email=r.email, password=pwd_context.hash(r.password.get_secret_value()), name=r.name)
-    db.add(new_admin)
-    await db.commit()
-    await db.refresh(new_admin)
+    new_admin = Admin(email=str(r.email), password=pwd_context.hash(r.password.get_secret_value()), name=r.name)
+    await create(db, new_admin)
 
 
 @router.get("/{email}")
@@ -75,7 +75,7 @@ async def get_admin(email: EmailStr, db: db_d):
       "updated_at": "2025-01-02T00:00:00"
     }
     ```"""
-    return (await db.execute(select(Admin).where(Admin.email == email))).scalar()
+    return await read(db, Admin, Admin.email == email)
 
 
 @router.get('')
@@ -107,7 +107,7 @@ async def get_admins(db: db_d, skip: int = 0, limit: int = 10):
       }
     ]
     ```"""
-    return (await db.execute(select(Admin).offset(skip).limit(limit))).scalars().all()
+    return await read_all(db, Admin, skip, limit)
 
 
 @router.patch('/{email}')
@@ -153,8 +153,7 @@ async def update_user(email: EmailStr, data: dict[str, Any], db: db_d) -> int:
                 setattr(admin, key, pwd_context.hash(value))
         else:
             raise InvalidField(key)
-    await db.commit()
-    await db.refresh(admin)
+    await update(db, admin)
     return admin.id
 
 
@@ -180,8 +179,7 @@ async def delete_admin(email: EmailStr, db: db_d) -> None:
 
     ### Example Response:
     HTTP Status: 204 No Content"""
-    admin = (await db.execute(select(Admin).where(Admin.email == email))).scalar()
-    if not admin:
+    try:
+        await delete(db, Admin, Admin.email == email)
+    except NoResultFound:
         raise UserNotFound()
-    await db.delete(admin)
-    await db.commit()

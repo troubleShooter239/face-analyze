@@ -4,11 +4,13 @@ from typing import Any
 from fastapi import APIRouter
 from pydantic import EmailStr
 from sqlalchemy import select
+from sqlalchemy.exc import NoResultFound
 from starlette import status
 
 from src.dependencies import db_d, is_admin_d
 from src.models import User
 from src.schemas.users import AddUserRequest
+from src.services.crud import create, read_all, read, update, delete
 from src.services.security import pwd_context
 from src.utils.exceptions import EntityAlreadyExists, UserNotFound, InvalidField
 from src.utils.logger import logger
@@ -47,11 +49,9 @@ async def add_user(r: AddUserRequest, db: db_d) -> None:
         raise EntityAlreadyExists()
 
     cur_time = datetime.now(UTC)
-    new_user = User(email=r.email, password=pwd_context.hash(r.password.get_secret_value()), created_at=cur_time,
+    new_user = User(email=str(r.email), password=pwd_context.hash(r.password.get_secret_value()), created_at=cur_time,
                     updated_at=cur_time)
-    db.add(new_user)
-    await db.commit()
-    await db.refresh(new_user)
+    await create(db, new_user)
 
 
 @router.get('')
@@ -83,7 +83,7 @@ async def get_users(db: db_d, skip: int = 0, limit: int = 10):
       }
     ]
     ```"""
-    return (await db.execute(select(User).offset(skip).limit(limit))).scalars().all()
+    return await read_all(db, User, skip, limit)
 
 
 @router.get("/{email}")
@@ -110,7 +110,7 @@ async def get_user(email: EmailStr, db: db_d):
       "updated_at": "2025-01-02T00:00:00"
     }
     ```"""
-    return (await db.execute(select(User).where(User.email == email))).scalar()
+    return await read(db, User, User.email == email)
 
 
 @router.patch('/{email}')
@@ -157,8 +157,7 @@ async def update_user(email: EmailStr, data: dict[str, Any], db: db_d) -> int:
         else:
             raise InvalidField(key)
     user.updated_at = datetime.now(UTC)
-    await db.commit()
-    await db.refresh(user)
+    await update(db, user)
     return user.id
 
 
@@ -184,8 +183,7 @@ async def delete_user(email: EmailStr, db: db_d) -> None:
 
     ### Example Response:
     HTTP Status: 204 No Content"""
-    user = (await db.execute(select(User).where(User.email == email))).scalar()
-    if not user:
+    try:
+        await delete(db, User, User.email == email)
+    except NoResultFound:
         raise UserNotFound()
-    await db.delete(user)
-    await db.commit()
