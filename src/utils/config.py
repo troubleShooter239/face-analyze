@@ -5,7 +5,7 @@ from pydantic import BaseModel, SecretStr, PostgresDsn, HttpUrl
 
 
 class DbSettings(BaseModel):
-    dsn: PostgresDsn = PostgresDsn(f"postgresql+asyncpg://superuser:superpassword@localhost:5432/face-analyze")
+    dsn: PostgresDsn = PostgresDsn(f"postgresql+asyncpg://super-user:super-password@localhost:5432/face-analyze")
 
 
 class CORSSettings(BaseModel):
