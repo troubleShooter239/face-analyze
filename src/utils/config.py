@@ -5,7 +5,7 @@ from pydantic import BaseModel, SecretStr, PostgresDsn, HttpUrl
 
 
 class DbSettings(BaseModel):
-    dsn: PostgresDsn = PostgresDsn(f"postgresql+asyncpg://superuser:superpassword@localhost:5432/face-analyze")
+    dsn: PostgresDsn = PostgresDsn(f"postgresql+asyncpg://super-user:super-password@localhost:5432/face-analyze")
 
 
 class CORSSettings(BaseModel):
@@ -47,6 +47,7 @@ This API is suitable for:
 - **Photo analysis platforms** leveraging AI for insights into facial attributes.
 
 Each endpoint is designed with security and scalability in mind, ensuring a smooth integration experience for developers."""
+    # noinspection PyTypeChecker
     contact: Contact = Contact(
         name="troubleShooter239",
         url=HttpUrl("https://www.github.com/troubleShooter239"),

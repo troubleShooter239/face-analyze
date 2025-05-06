@@ -1,5 +1,4 @@
 from datetime import timedelta, datetime, timezone
-from random import randint
 
 from jwt import InvalidTokenError, encode, decode
 from passlib.context import CryptContext
@@ -51,7 +50,3 @@ def get_current_user(token: str, security: SecuritySettings) -> Payload:
     except (InvalidTokenError, ValidationError) as e:
         logger.info(f'Validate jwt error: {e}')
         raise ValidateCredentialsError()
-
-
-def generate_confirmation_code() -> int:
-    return randint(100000, 999999)
