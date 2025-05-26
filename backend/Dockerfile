@@ -15,4 +15,4 @@ COPY ./requirements /app/requirements
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir --upgrade -r /app/requirements/prod.txt
 
-CMD ["hypercorn", "src.main:app", "--bind", "0.0.0.0:8000", "--worker-class", "uvloop", "--workers", "6"]
+CMD ["hypercorn", "src.main:app", "--bind", "0.0.0.0:8000", "--worker-class", "uvloop"]
