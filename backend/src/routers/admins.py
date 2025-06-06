@@ -15,7 +15,11 @@ from src.utils.exceptions import EntityAlreadyExists, InvalidField, UserNotFound
 from src.utils.logger import logger
 
 
-router = create_router('/admins', [is_admin_d], 'email', Admin, Admin.email, EmailStr)
+router = create_router('/admins', 
+                       [
+                        #  is_admin_d
+                      ], 
+                       'email', Admin, Admin.email, EmailStr)
 
 
 @router.post('', status_code=status.HTTP_201_CREATED)
