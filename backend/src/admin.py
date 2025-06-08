@@ -4,8 +4,7 @@ import secrets
 
 from fastapi import FastAPI
 from sqladmin import Admin, ModelView
-from starlette.authentication import AuthCredentials, AuthenticationBackend, AuthenticationError, \
-    SimpleUser
+from starlette.authentication import AuthCredentials, AuthenticationBackend, AuthenticationError, SimpleUser
 from starlette.requests import HTTPConnection
 from starlette.responses import Response, JSONResponse
 from starlette.middleware import Middleware
@@ -13,11 +12,11 @@ from starlette.middleware.authentication import AuthenticationMiddleware
 
 from .models import Admin as AdminModel
 from .database import engine
-# from src.core.config import settings
+from .utils.config import admin_settings
 
 
 class BasicAuthMiddleware(AuthenticationMiddleware):
-    def default_on_error(self, conn: HTTPConnection, exc: Exception) -> Response:
+    def default_on_error(self, conn: HTTPConnection, exc: Exception) -> Response: # type: ignore
         if isinstance(exc, AuthenticationError):
             return JSONResponse(
                 status_code=401,
@@ -29,8 +28,8 @@ class BasicAuthMiddleware(AuthenticationMiddleware):
 
 
 class BasicAuthBackend(AuthenticationBackend):
-    admin_username = "admin"
-    admin_password = "admin"
+    admin_username = admin_settings.username
+    admin_password = admin_settings.password.get_secret_value()
 
     async def authenticate(self, conn: HTTPConnection) -> tuple[AuthCredentials, SimpleUser]:
         if "Authorization" not in conn.headers:
@@ -70,5 +69,5 @@ def create_admin_panel(app: FastAPI,):
         middlewares=[Middleware(BasicAuthMiddleware, backend=BasicAuthBackend())]
     )
 
-    # for i in UserAdmin,:
-    #     admin.add_model_view(i)
+    for i in UserAdmin,:
+        admin.add_model_view(i)
