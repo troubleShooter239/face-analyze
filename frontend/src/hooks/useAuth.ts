@@ -1,13 +1,13 @@
-import {useEffect} from "react";
-import {jwtDecode} from "jwt-decode";
-import {useNavigate} from "react-router-dom";
+import { useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
-  validUrl: string,
-  nonValidUrl: string
+  validUrl: string;
+  nonValidUrl: string;
 }
 
-const useAuth = ({validUrl, nonValidUrl}: Props): void => {
+const useAuth = ({ validUrl, nonValidUrl }: Props): void => {
   const navigate = useNavigate();
   useEffect(() => {
     const isTokenValid = (token: string | null) => {
@@ -18,21 +18,19 @@ const useAuth = ({validUrl, nonValidUrl}: Props): void => {
         const currentTime = Date.now() / 1000;
         return decoded.exp >= currentTime;
       } catch (error) {
-        console.error('Error with decoding token:', error);
+        console.error("Error with decoding token:", error);
         return false;
       }
     };
-    if (isTokenValid(localStorage.getItem('token'))) {
-      if (validUrl === '')
-        return
-      navigate(validUrl)
+    if (isTokenValid(localStorage.getItem("token"))) {
+      if (validUrl === "") return;
+      navigate(validUrl);
     } else {
-      if (nonValidUrl === '')
-        return
-      navigate(nonValidUrl)
+      if (nonValidUrl === "") return;
+      navigate(nonValidUrl);
     }
-    return
+    return;
   }, [navigate]);
-}
+};
 
 export default useAuth;

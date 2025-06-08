@@ -23,7 +23,7 @@ app = FastAPI(
 )
 app.add_middleware(CORSMiddleware, **cors_settings.model_dump())
 
-create_admin_panel(app)
-
 for r in admins.router, auth.router, users.router, ai.router, logs.router, images.router, ai_result.router:
     app.include_router(r)
+
+create_admin_panel(app)

@@ -47,9 +47,9 @@ async def sign_in(r: SignInRequest, db: db_d) -> dict[str, str]:
       "token_type": "bearer"
     }
     ```"""
-    user = (await db.execute(union_all(
-        select(User).where(User.email == r.email), select(Admin).where(Admin.email == r.email)
-    ))).scalars().first()
+    user = (await db.execute(select(User).where(User.email == r.email))).scalar_one_or_none()
+    if not user:
+      user = (await db.execute(select(Admin).where(Admin.email == r.email))).scalar_one_or_none()
     if not user:
         logger.info(f"User with email: {r.email} is not found")
         raise UserNotFound()
