@@ -2,14 +2,13 @@ from typing import Any
 
 from pydantic import EmailStr
 from sqlalchemy import select
-from sqlalchemy.exc import NoResultFound
 from starlette import status
 
 from src.dependencies import db_d, is_admin_d
 from src.models import Admin
 from src.routers import create_router
 from src.schemas.admins import AddAdminRequest
-from src.services.crud import delete, update, read_all, read, create
+from src.services.crud import update, create
 from src.services.security import pwd_context
 from src.utils.exceptions import EntityAlreadyExists, InvalidField, UserNotFound
 from src.utils.logger import logger

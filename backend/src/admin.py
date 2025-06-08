@@ -3,14 +3,16 @@ import binascii
 import secrets
 
 from fastapi import FastAPI
-from sqladmin import Admin, ModelView
+from sqladmin import ModelView
+from sqladmin import Admin as create_panel
+
 from starlette.authentication import AuthCredentials, AuthenticationBackend, AuthenticationError, SimpleUser
 from starlette.requests import HTTPConnection
 from starlette.responses import Response, JSONResponse
 from starlette.middleware import Middleware
 from starlette.middleware.authentication import AuthenticationMiddleware
 
-from .models import Admin as AdminModel
+from .models import Admin, User, AIResult, Image, Log, AdminLog
 from .database import engine
 from .utils.config import admin_settings
 
@@ -52,22 +54,68 @@ class BasicAuthBackend(AuthenticationBackend):
         return AuthCredentials(["authenticated"]), SimpleUser(username)
 
 
-class UserAdmin(ModelView, model=AdminModel):
-    column_list = [AdminModel.id, AdminModel.email, AdminModel.role]
-    # column_searchable_list = [User.id, User.email, User.role]
-    # column_sortable_list = [User.id, User.created_at, User.updated_at]
+class Admin_(ModelView, model=Admin):
+    column_list = [Admin.id, Admin.email, Admin.name]
+    column_searchable_list = [Admin.id, Admin.email, Admin.name]
+    column_sortable_list = [Admin.id]
 
     name = "Admin"
     icon = "fa-solid fa-user"
 
 
+class User_(ModelView, model=User):
+    column_list = [User.id, User.email, User.created_at]
+    column_searchable_list = [User.id, User.email]
+    column_sortable_list = [User.id, User.created_at, User.updated_at]
+    
+    name = 'User'
+    icon = "fa-solid fa-user"
+
+
+class AIResult_(ModelView, model=AIResult):
+    column_list = [AIResult.id, AIResult.image_id, AIResult.metric_name, AIResult.metric_value, AIResult.analyzed_at]
+    column_searchable_list = [AIResult.id, AIResult.metric_name]
+    column_sortable_list = [AIResult.id, AIResult.analyzed_at]
+
+    name = "AI Result"
+    icon = "fa-solid fa-microchip"
+    
+    
+class Image_(ModelView, model=Image):
+    column_list = [Image.id, Image.user_id, Image.image]
+    column_searchable_list = [Image.id, Image.image]
+    column_sortable_list = [Image.id]
+
+    name = "Image"
+    icon = "fa-solid fa-image"
+
+
+class Log_(ModelView, model=Log):
+    column_list = [Log.id, Log.user_id, Log.time, Log.action]
+    column_searchable_list = [Log.id, Log.action]
+    column_sortable_list = [Log.id, Log.time]
+
+    name = "User Log"
+    icon = "fa-solid fa-scroll"
+    
+
+class AdminLog_(ModelView, model=AdminLog):
+    column_list = [AdminLog.id, AdminLog.admin_id, AdminLog.time, AdminLog.action]
+    column_searchable_list = [AdminLog.id, AdminLog.action]
+    column_sortable_list = [AdminLog.id, AdminLog.time]
+
+    name = "Admin Log"
+    icon = "fa-solid fa-clipboard-list"
+
+    
+
 def create_admin_panel(app: FastAPI,):
-    admin = Admin(
+    admin = create_panel(
         app,
         engine,
         title='Face Analyze Admin Panel',
         middlewares=[Middleware(BasicAuthMiddleware, backend=BasicAuthBackend())]
     )
 
-    for i in UserAdmin,:
+    for i in Admin_, User_, AIResult_, Image_, Log_, AdminLog_:
         admin.add_model_view(i)

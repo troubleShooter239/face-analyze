@@ -8,7 +8,7 @@ from fastapi import APIRouter, File, UploadFile, Query
 from numpy import array
 
 from src.dependencies import db_d, is_user_d
-from src.models import Image, AIResult
+from src.models import Image, AIResult, Log
 from src.schemas.ai import AnalyzeResult, AnalyzeProcessedFace, AnalyzeResponse, ExtractFacesResponse, \
     ExtractFacesResult, VerifyResponse
 from src.services.security import get_current_user
@@ -110,7 +110,8 @@ async def analyze(db: db_d, token: str, img: UploadFile = File(...),
       }
     ]"""
     image = await img.read()
-    img_to_save = Image(user_id=int(get_current_user(token, security_settings).sub),
+    u_id = int(get_current_user(token, security_settings).sub)
+    img_to_save = Image(user_id=u_id,
                         image=b64encode(image).decode('utf8'))
     db.add(img_to_save)
     await db.commit()
@@ -130,7 +131,14 @@ async def analyze(db: db_d, token: str, img: UploadFile = File(...),
     db.add(result_to_save)
     await db.commit()
     await db.refresh(result_to_save)
-
+    
+    log = Log(
+        user_id=u_id,
+        time=datetime.now(UTC),
+        action="Analyzed face(s)"
+    )
+    db.add(log)
+    await db.commit()
     return result.result
 
 
@@ -198,7 +206,8 @@ async def extract_faces(token: str, db: db_d, img: UploadFile = File(...),
       }
     ]"""
     image = await img.read()
-    img_to_save = Image(user_id=int(get_current_user(token, security_settings).sub),
+    u_id = int(get_current_user(token, security_settings).sub)
+    img_to_save = Image(user_id=u_id,
                         image=b64encode(image).decode('utf8'))
     db.add(img_to_save)
     await db.commit()
@@ -219,6 +228,14 @@ async def extract_faces(token: str, db: db_d, img: UploadFile = File(...),
     db.add(result_to_save)
     await db.commit()
     await db.refresh(result_to_save)
+    
+    log = Log(
+        user_id=u_id,
+        time=datetime.now(UTC),
+        action="Extracted faces"
+    )
+    db.add(log)
+    await db.commit()
     return result.result
 
 
@@ -288,14 +305,15 @@ async def verify(token: str, db: db_d, img1: UploadFile = File(...), img2: Uploa
       "time": 0.025
     }"""
     image1 = await img1.read()
-    img_to_save = Image(user_id=int(get_current_user(token, security_settings).sub),
+    u_id = int(get_current_user(token, security_settings).sub)
+    img_to_save = Image(user_id=u_id,
                         image=b64encode(image1).decode('utf8'))
     db.add(img_to_save)
     await db.commit()
     await db.refresh(img_to_save)
 
     image2 = await img2.read()
-    img_to_save = Image(user_id=int(get_current_user(token, security_settings).sub),
+    img_to_save = Image(user_id=u_id,
                         image=b64encode(image2).decode('utf8'))
     db.add(img_to_save)
     await db.commit()
@@ -315,4 +333,11 @@ async def verify(token: str, db: db_d, img1: UploadFile = File(...), img2: Uploa
     await db.commit()
     await db.refresh(result_to_save)
 
+    log = Log(
+        user_id=u_id,
+        time=datetime.now(UTC),
+        action="Verified two images"
+    )
+    db.add(log)
+    await db.commit()
     return result

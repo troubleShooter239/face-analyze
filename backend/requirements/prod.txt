@@ -16,3 +16,4 @@ numpy>=2.0.2
 hypercorn>=0.17.3
 uvloop>=0.21.0
 aioquic>=1.2.0
+sqladmin>=0.20.1
