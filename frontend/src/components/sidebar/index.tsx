@@ -13,11 +13,20 @@ import IconButton from "@mui/joy/IconButton";
 import Menu from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import useAuth from "../../hooks/useAuth";
 
 const Sidebar = () => {
+  useAuth({ validUrl: "", nonValidUrl: "/sign-in" });
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
-  const token: any = jwtDecode(localStorage.getItem("token")!);
+
+  const storageItem = localStorage.getItem("token");
+  if (!storageItem) {
+    navigate("/sign-in");
+    return null;
+  }
+
+  const token: any = jwtDecode(storageItem);
 
   const logout = () => {
     localStorage.removeItem("token");
