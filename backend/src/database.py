@@ -14,7 +14,5 @@ class Base(DeclarativeBase):
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
     async with async_maker() as session:
         yield session

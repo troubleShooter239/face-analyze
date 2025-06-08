@@ -51,12 +51,18 @@ Each endpoint is designed with security and scalability in mind, ensuring a smoo
     contact: Contact = Contact(
         name="troubleShooter239",
         url=HttpUrl("https://www.github.com/troubleShooter239"),
-        email="morgun2282@gmail.com"
+        email="morgun2282@gmail.com" # type: ignore
     )
     license: License = License(name="MIT", url=HttpUrl("https://opensource.org/licenses/MIT"))
     redoc_url: str | None = None
+    
+
+class AdminSettings(BaseModel):
+    username: str = 'admin'
+    password: SecretStr = SecretStr('admin')
 
 
+admin_settings: AdminSettings = AdminSettings()
 app_settings: AppSettings = AppSettings()
 db_settings: DbSettings = DbSettings()
 cors_settings: CORSSettings = CORSSettings()
