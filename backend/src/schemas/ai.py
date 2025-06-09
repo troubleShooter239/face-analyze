@@ -37,8 +37,8 @@ class FacialArea(BaseModel):
 
 
 class FacialAreas(BaseModel):
-    img1: FacialArea
-    img2: FacialArea
+    img1: Region
+    img2: Region
 
 
 class FaceDetectionResult(BaseModel):
@@ -60,7 +60,6 @@ class VerifyResponse(BaseModel):
     distance: float
     threshold: float
     model: str
-    detector_backend: str
-    similarity_metric: str
+    # distance_metric: str
     facial_areas: FacialAreas
     time: float

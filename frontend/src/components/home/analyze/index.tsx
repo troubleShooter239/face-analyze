@@ -5,8 +5,16 @@ import { ANALYZE } from "../../../utils/constants";
 import Header from "../../header";
 import { Box, Button, CircularProgress, Container, Typography } from "@mui/joy";
 import { UploadFile } from "@mui/icons-material";
-import { FormControlLabel } from "@mui/material";
+import { Divider, FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/joy/Checkbox";
+import ImageMarquee from "../../img-marquee";
+import FaceIcon from "@mui/icons-material/Face";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import SecurityIcon from "@mui/icons-material/Security";
+import WcIcon from "@mui/icons-material/Wc";
+import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
+import PublicIcon from "@mui/icons-material/Public";
+import CropFreeIcon from "@mui/icons-material/CropFree";
 
 const AnalyzeComponent = () => {
   const [image, setImage] = useState<File | null>(null); // Загруженное изображение
@@ -105,18 +113,50 @@ const AnalyzeComponent = () => {
           >
             FaceAnalyze - AI processing images
           </Typography>
-          <Typography level="body-lg" sx={{ marginBottom: 10 }}>
+          <Typography level="body-lg" sx={{ marginBottom: 8 }}>
             Loved by over 1 million users
           </Typography>
-          <Typography level="body-lg" sx={{ marginBottom: 16 }}>
+          <Typography
+            level="body-lg"
+            sx={{
+              marginBottom: 6,
+              backgroundColor: "#f0f4f8",
+              borderRadius: 8,
+            }}
+          >
             Instantly decode visual content with our intelligent technology that
             analyzes, identifies, and extracts valuable insights from any image
             with remarkable accuracy.
           </Typography>
         </Box>
+        <ImageMarquee />
+        <Typography
+          level="body-md"
+          sx={{
+            marginTop: 6,
+            backgroundColor: "rgb(252, 228, 251)",
+            borderRadius: 8,
+            padding: 3,
+          }}
+        >
+          <strong>
+            Join hundreds of developers and companies already using our
+            platform:
+          </strong>
+          <br />
+          <br />
+          "Fast, reliable, and ridiculously easy to integrate." –{" "}
+          <em>CTO, Fintech startup</em>
+          <br />
+          "We replaced 3 different models with this single API." –{" "}
+          <em>AI Lead, University Research Lab</em>
+          <br />
+          "Impressed by the anti-spoof accuracy. This adds real value to our KYC
+          pipeline." – <em>Compliance Engineer</em>
+        </Typography>
 
         {/* Кнопка для загрузки изображения */}
-        <Box sx={{ textAlign: "center", marginBottom: 4 }}>
+        <Box sx={{ textAlign: "center", marginBottom: 4, marginTop: 12 }}>
           <Button component="label" variant="soft" color="primary">
             <UploadFile />
             Upload
@@ -136,8 +176,7 @@ const AnalyzeComponent = () => {
               src={URL.createObjectURL(image)}
               alt="Uploaded preview"
               style={{
-                maxWidth: "420px",
-                height: "300px",
+                maxWidth: "480px",
                 borderRadius: "8px",
               }}
             />
@@ -245,7 +284,7 @@ const AnalyzeComponent = () => {
             }}
           >
             <Typography level="h3" sx={{ marginBottom: 2 }}>
-              Result:
+              Summary:
             </Typography>
             {results.map((face, index) => (
               <Box
@@ -257,37 +296,42 @@ const AnalyzeComponent = () => {
                   border: "1px solid #e0e0e0",
                 }}
               >
-                <Typography variant="soft">Лицо {index + 1}</Typography>
+                <Typography variant="soft" fontWeight={"bold"} fontSize="20px">
+                  Face: №{index + 1}
+                </Typography>
                 <Box sx={{ marginTop: 2 }}>
-                  {/* Отображение возраста */}
                   {selectedActions.age && (
-                    <Typography variant="soft">Age: {face.age}</Typography>
+                    <Typography variant="soft" fontSize="18px">
+                      <CalendarTodayIcon fontSize="small" sx={{ mr: 1 }} />
+                      Age: {face.age}
+                    </Typography>
                   )}
                   {selectedActions.age && (
-                    <Typography variant="soft">
+                    <Typography variant="soft" fontSize="18px">
+                      <SecurityIcon fontSize="small" sx={{ mr: 1 }} />
                       Age confidence: {face.face_confidence.toFixed(2)}
                     </Typography>
                   )}
 
-                  {/* Отображение пола */}
                   {selectedActions.gender && (
-                    <Typography variant="soft">
-                      Gender: {face.dominant_gender} (Gender confidence:{" "}
+                    <Typography variant="soft" fontSize="18px">
+                      <WcIcon fontSize="small" sx={{ mr: 1 }} />
+                      Gender: {face.dominant_gender} (Confidence:{" "}
                       {face.gender[face.dominant_gender].toFixed(2)})
                     </Typography>
                   )}
 
-                  {/* Эмоции */}
                   {selectedActions.emotion && (
-                    <Typography variant="soft">
+                    <Typography variant="soft" fontSize="18px">
+                      <EmojiEmotionsIcon fontSize="small" sx={{ mr: 1 }} />
                       Emotion: {face.dominant_emotion} (Confidence:{" "}
                       {face.emotion[face.dominant_emotion].toFixed(2)})
                     </Typography>
                   )}
 
-                  {/* Раса */}
                   {selectedActions.race && (
-                    <Typography variant="soft">
+                    <Typography variant="soft" fontSize="18px">
+                      <PublicIcon fontSize="small" sx={{ mr: 1 }} />
                       Race: {face.dominant_race} (Confidence:{" "}
                       {face.race[face.dominant_race].toFixed(2)})
                     </Typography>
@@ -295,7 +339,7 @@ const AnalyzeComponent = () => {
                 </Box>
                 {/* Отображение региона лица (координаты) */}
                 <Box sx={{ marginTop: 2 }}>
-                  <Typography variant="soft">
+                  <Typography variant="soft" fontSize="18px">
                     Face region: x={face.region.x}, y={face.region.y}, w=
                     {face.region.w}, h={face.region.h}
                   </Typography>
@@ -323,7 +367,7 @@ const AnalyzeComponent = () => {
         )}
         {results && (
           <Box>
-            <h1>Received Data:</h1>
+            <h1>All processed data:</h1>
             {results.map((result, index) => (
               <div key={index} style={styles.card}>
                 <h3>Face #{index + 1}</h3>
@@ -426,6 +470,38 @@ const AnalyzeComponent = () => {
             <i>under 2 seconds per image</i>.
           </p>
         </div>
+
+        <Typography
+          level="body-md"
+          sx={{
+            marginTop: 20,
+            marginBottom: 10,
+            backgroundColor: "#e8f5e9",
+            borderRadius: 8,
+            padding: 3,
+          }}
+        >
+          <strong>Why choose our face recognition technology?</strong>
+          <br />
+          <br />
+          ✅ Industry-leading accuracy tested on real-world datasets.
+          <br />
+          ✅ Lightning-fast processing — under 1 second per image.
+          <br />
+          ✅ Built-in spoof detection for fraud prevention.
+          <br />
+          ✅ Ready for scale — from small startups to enterprise.
+          <br />
+          ✅ GDPR-compliant with strong data privacy policies.
+          <br />
+          <br />
+          Our system is trusted by financial institutions, health tech startups,
+          security integrators, and academic researchers worldwide.
+        </Typography>
+        <Divider sx={{ marginBottom: 3 }} />
+        <Typography level="body-sm" sx={{ fontStyle: "italic", color: "#666" }}>
+          FaceAnalyze — AI, which brings happiness.
+        </Typography>
       </Container>
     </>
   );

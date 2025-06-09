@@ -241,7 +241,7 @@ async def extract_faces(token: str, db: db_d, img: UploadFile = File(...),
 
 @router.post('/verify')
 async def verify(token: str, db: db_d, img1: UploadFile = File(...), img2: UploadFile = File(...),
-                 anti_spoofing: bool = False) -> VerifyResponse | None:
+                 anti_spoofing: bool = False) -> VerifyResponse:
     """Verify if two images represent the same person or different persons.
 
     ### Request Parameters:
@@ -325,7 +325,7 @@ async def verify(token: str, db: db_d, img1: UploadFile = File(...), img2: Uploa
                                                   array(open(BytesIO(image2))), anti_spoofing=anti_spoofing))
     except Exception as e:
         logger.warn(f'Could not verify images {e}')
-        return None
+        raise
 
     result_to_save = AIResult(image_id=img_to_save.id, metric_name='analyze', metric_value=result.model_dump_json(),
                               analyzed_at=datetime.now(UTC))

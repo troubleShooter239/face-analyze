@@ -2,6 +2,8 @@ from base64 import b64encode
 from datetime import UTC, datetime
 from io import BytesIO
 from pathlib import Path
+from random import randint
+from uuid import uuid4
 
 from PIL.Image import open
 from deepface import DeepFace
@@ -24,6 +26,36 @@ async def drop_and_create():
 async def insert_test_data():
     async with async_maker() as session:
         # Создание администратора
+        for i in range(randint(7, 15)):
+            h = uuid4().hex
+            admin = Admin(email=f"admin{h}@face-analyze.com", password=pwd_context.hash(h), name=f"Oleg{i}")
+            session.add(admin)
+            
+            user = User(
+                email=f"user{i}@example.com",
+                password=pwd_context.hash(h),
+                created_at=datetime.now(UTC),
+                updated_at=datetime.now(UTC)
+            )
+            session.add(user)
+            
+            await session.flush()
+            log = Log(
+                user_id=user.id,
+                time=datetime.now(UTC),
+                action="Ya rodilsa"
+            )
+            session.add(log)
+
+            admin_log = AdminLog(
+                admin_id=admin.id,
+                time=datetime.now(UTC),
+                action="Ya rodilsa chtobi manupulate users i ne toka"
+            )
+            session.add(admin_log)
+
+            await session.commit()
+        
         admin = Admin(email="admin@face-analyze.com", password=pwd_context.hash("admin"), name="Oleg")
         session.add(admin)
 
@@ -34,6 +66,7 @@ async def insert_test_data():
             created_at=datetime.now(UTC),
             updated_at=datetime.now(UTC)
         )
+        
         session.add(user)
 
         await session.flush()  # получим ID до использования их ниже
