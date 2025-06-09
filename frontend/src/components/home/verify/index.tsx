@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { ExtractFacesResult } from "../../../common/types/ai";
+import { FaceVerificationResult } from "../../../common/types/ai";
 import axios from "axios";
-import { EXTRACT } from "../../../utils/constants";
+import { VERIFY } from "../../../utils/constants";
 import Header from "../../header";
 import { Box, Button, CircularProgress, Container, Typography } from "@mui/joy";
 import { UploadFile } from "@mui/icons-material";
@@ -10,14 +10,16 @@ import Checkbox from "@mui/joy/Checkbox";
 import FaceIcon from "@mui/icons-material/Face";
 import SecurityIcon from "@mui/icons-material/Security";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import ImageIcon from "@mui/icons-material/Image";
 
-const ExtractFacesComponent = () => {
-  const [image, setImage] = useState<File | null>(null); // Загруженное изображение
+const VerifyComponent = () => {
+  const [image1, setImage1] = useState<File | null>(null); // Загруженное изображение
+  const [image2, setImage2] = useState<File | null>(null); // Второе изображение
   const [loading, setLoading] = useState(false); // Статус загрузки
-  const [results, setResults] = useState<ExtractFacesResult[] | null>(null); // Результаты обработки
+  const [results, setResults] = useState<FaceVerificationResult | null>(null); // Результаты обработки
   const [error, setError] = useState<string | null>(null); // Ошибка, если возникнет
 
   const [antiSpoofing, setAntiSpoofing] = useState(false); // Состояние для anti-spoofing
@@ -25,7 +27,8 @@ const ExtractFacesComponent = () => {
   // Обработчик для загрузки файла
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setImage(e.target.files[0]);
+      setImage1(e.target.files[0]);
+      setImage2(e.target.files[1]);
       setResults(null); // Очистка результатов при новой загрузке
       setError(null); // Очистка ошибки
     }
@@ -40,13 +43,14 @@ const ExtractFacesComponent = () => {
 
   // Отправка изображения на сервер
   const handleSubmit = async () => {
-    if (!image) return;
+    if (!image1 || !image2) return;
     setLoading(true);
     const formData = new FormData();
-    formData.append("img", image);
+    formData.append("img1", image1);
+    formData.append("img2", image2);
 
     try {
-      const response = await axios.post(EXTRACT, formData, {
+      const response = await axios.post(VERIFY, formData, {
         params: {
           token: localStorage.getItem("token")!,
           anti_spoofing: antiSpoofing,
@@ -100,19 +104,17 @@ const ExtractFacesComponent = () => {
               borderRadius: 8,
             }}
           >
-            Detect and extract faces from any image with high precision. <br />
-            Our advanced face extraction engine locates facial regions,
-            pinpoints eye positions and anti-spoofing! <br />
-            <br />
-            Perfect for integration into security systems, attendance
-            monitoring, user authentication, and AI-powered photography
-            solutions.
+            Verify identity by comparing two facial images using advanced neural
+            networks. <br />
+            Our system analyzes facial features, calculates similarity distance,
+            and determines whether the two images represent the same person —
+            all in a matter of seconds.
           </Typography>
         </Box>
         <Box sx={{ textAlign: "center" }}>
           <img
-            src="https://i.ibb.co/23Y2nyQv/detector-outputs-20240414.jpg"
-            alt="extract-faces"
+            src="https://i.ibb.co/C5vZmF8j/ID-verification-2773188637.png"
+            alt="face-verify"
             style={{
               height: 420,
               width: "fit-content",
@@ -127,6 +129,7 @@ const ExtractFacesComponent = () => {
             <UploadFile />
             Upload
             <input
+              multiple
               type="file"
               accept="image/*"
               hidden
@@ -136,10 +139,22 @@ const ExtractFacesComponent = () => {
         </Box>
 
         {/* Превью загруженного изображения */}
-        {image && (
+        {image1 && (
           <Box sx={{ textAlign: "center", marginBottom: 4 }}>
             <img
-              src={URL.createObjectURL(image)}
+              src={URL.createObjectURL(image1)}
+              alt="Uploaded preview"
+              style={{
+                maxWidth: "480px",
+                borderRadius: "8px",
+              }}
+            />
+          </Box>
+        )}
+        {image2 && (
+          <Box sx={{ textAlign: "center", marginBottom: 4 }}>
+            <img
+              src={URL.createObjectURL(image2)}
               alt="Uploaded preview"
               style={{
                 maxWidth: "480px",
@@ -168,7 +183,7 @@ const ExtractFacesComponent = () => {
             variant="soft"
             color="neutral"
             onClick={handleSubmit}
-            disabled={loading || !image}
+            disabled={loading || (!image1 && !image2)}
           >
             {loading ? (
               <CircularProgress size={"md"} sx={{ color: "white" }} />
@@ -191,9 +206,8 @@ const ExtractFacesComponent = () => {
             <Typography level="h3" sx={{ marginBottom: 2 }}>
               Summary:
             </Typography>
-            {results.map((face: ExtractFacesResult, index: number) => (
+            {results && (
               <Box
-                key={index}
                 sx={{
                   marginBottom: 3,
                   padding: 2,
@@ -202,56 +216,47 @@ const ExtractFacesComponent = () => {
                 }}
               >
                 <Typography variant="soft">
-                  <FaceIcon fontSize="small" sx={{ mr: 1 }} />
-                  Face {index + 1}
+                  <CheckCircleIcon fontSize="small" sx={{ mr: 1 }} />
+                  Verified: {results.verified ? "Yes" : "No"}
                 </Typography>
 
                 <Box sx={{ marginTop: 2 }}>
                   <Typography variant="soft">
                     <SecurityIcon fontSize="small" sx={{ mr: 1 }} />
-                    Confidence: {face.confidence.toFixed(2)}
+                    Distance: {results.distance.toFixed(4)}
                   </Typography>
 
-                  {typeof face.is_real === "boolean" && (
-                    <Typography variant="soft">
-                      <CheckCircleIcon fontSize="small" sx={{ mr: 1 }} />
-                      Is Real: {face.is_real ? "Yes" : "No"}
-                    </Typography>
-                  )}
+                  <Typography variant="soft">
+                    <CropFreeIcon fontSize="small" sx={{ mr: 1 }} />
+                    Threshold: {results.threshold}
+                  </Typography>
 
-                  {typeof face.antispoof_score === "number" && (
-                    <Typography variant="soft">
-                      <HelpOutlineIcon fontSize="small" sx={{ mr: 1 }} />
-                      Antispoof Score: {face.antispoof_score.toFixed(2)}
-                    </Typography>
-                  )}
+                  <Typography variant="soft">
+                    <FaceIcon fontSize="small" sx={{ mr: 1 }} />
+                    Model: {results.model}
+                  </Typography>
+
+                  <Typography variant="soft">
+                    <AccessTimeIcon fontSize="small" sx={{ mr: 1 }} />
+                    Time: {results.time.toFixed(2)}s
+                  </Typography>
                 </Box>
 
                 <Box sx={{ marginTop: 2 }}>
-                  <Typography variant="soft">
-                    <CropFreeIcon fontSize="small" sx={{ mr: 1 }} />
-                    Facial area: x={face.facial_area.x}, y={face.facial_area.y},
-                    w={face.facial_area.w}, h={face.facial_area.h}
-                  </Typography>
-
-                  {face.facial_area.left_eye && (
-                    <Typography variant="soft">
-                      <RemoveRedEyeIcon fontSize="small" sx={{ mr: 1 }} />
-                      Left eye: x={face.facial_area.left_eye[0]}, y=
-                      {face.facial_area.left_eye[1]}
-                    </Typography>
-                  )}
-
-                  {face.facial_area.right_eye && (
-                    <Typography variant="soft">
-                      <RemoveRedEyeIcon fontSize="small" sx={{ mr: 1 }} />
-                      Right eye: x={face.facial_area.right_eye[0]}, y=
-                      {face.facial_area.right_eye[1]}
-                    </Typography>
+                  {Object.entries(results.facial_areas).map(
+                    ([imgKey, region], idx) => (
+                      <Box key={imgKey} sx={{ marginBottom: 1 }}>
+                        <Typography variant="soft">
+                          <ImageIcon fontSize="small" sx={{ mr: 1 }} />
+                          {imgKey.toUpperCase()} Region: x={region.x}, y=
+                          {region.y}, w={region.w}, h={region.h}
+                        </Typography>
+                      </Box>
+                    )
                   )}
                 </Box>
               </Box>
-            ))}
+            )}
           </Box>
         )}
 
@@ -273,126 +278,117 @@ const ExtractFacesComponent = () => {
         )}
         {results && (
           <Box>
-            <h1>All extracted faces:</h1>
-            {results.map((result, index) => (
-              <div key={index} style={styles.card}>
-                <h3>Face #{index + 1}</h3>
+            <h1>Face Verification Result:</h1>
+            <div style={styles.card}>
+              <h3>Verification</h3>
 
-                <p>
-                  <strong>Confidence:</strong> {result.confidence}
-                </p>
+              <p>
+                <strong>Verified:</strong> {results.verified ? "Yes" : "No"}
+              </p>
 
-                {typeof result.is_real === "boolean" && (
-                  <p>
-                    <strong>Is Real:</strong> {result.is_real ? "Yes" : "No"}
-                  </p>
-                )}
+              <p>
+                <strong>Distance:</strong> {results.distance}
+              </p>
 
-                {typeof result.antispoof_score === "number" && (
-                  <p>
-                    <strong>Antispoof Score:</strong> {result.antispoof_score}
-                  </p>
-                )}
+              <p>
+                <strong>Threshold:</strong> {results.threshold}
+              </p>
 
-                <div>
-                  <h4>Facial Area:</h4>
-                  <p>
-                    Coordinates: ({result.facial_area.x}, {result.facial_area.y}
-                    )
-                  </p>
-                  <p>
-                    Width: {result.facial_area.w}, Height:{" "}
-                    {result.facial_area.h}
-                  </p>
-                </div>
+              <p>
+                <strong>Model:</strong> {results.model}
+              </p>
 
-                {result.facial_area.left_eye && (
-                  <div>
-                    <h4>Left Eye:</h4>
+              <p>
+                <strong>Time:</strong> {results.time}s
+              </p>
+
+              <div>
+                <h4>Facial Areas:</h4>
+                {Object.entries(results.facial_areas).map(([imgKey, area]) => (
+                  <div key={imgKey} style={{ marginBottom: "1em" }}>
+                    <h5>{imgKey.toUpperCase()}:</h5>
                     <p>
-                      x: {result.facial_area.left_eye[0]}, y:{" "}
-                      {result.facial_area.left_eye[1]}
+                      Coordinates: ({area.x}, {area.y})
+                    </p>
+                    <p>
+                      Width: {area.w}, Height: {area.h}
                     </p>
                   </div>
-                )}
-
-                {result.facial_area.right_eye && (
-                  <div>
-                    <h4>Right Eye:</h4>
-                    <p>
-                      x: {result.facial_area.right_eye[0]}, y:{" "}
-                      {result.facial_area.right_eye[1]}
-                    </p>
-                  </div>
-                )}
+                ))}
               </div>
-            ))}
+            </div>
           </Box>
         )}
 
         <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-xl">
           <h3 className="text-2xl font-bold mb-4 text-gray-900">
-            How AI Face Extractor Works
+            How Face Verification Works
           </h3>
           <ol className="list-decimal list-inside text-gray-700 space-y-2 mb-6">
             <li>
-              <strong style={{ color: "#0B6BCB" }}>Upload Your Image:</strong>{" "}
-              Drag and drop a photo (JPG, PNG, etc.) into our secure interface.
+              <strong style={{ color: "#0B6BCB" }}>Upload Two Images:</strong>{" "}
+              Select or drag and drop two facial images to compare. Supported
+              formats include JPG and PNG.
             </li>
             <li>
-              <strong style={{ color: "#0B6BCB" }}>Run Face Detection:</strong>{" "}
-              Our system identifies all faces in the image and captures detailed
-              region coordinates, including optional eye positions.
+              <strong style={{ color: "#0B6BCB" }}>Start Verification:</strong>{" "}
+              Our model will extract facial embeddings and compute similarity
+              using state-of-the-art metrics.
             </li>
             <li>
               <strong style={{ color: "#0B6BCB" }}>
-                Review Detection Results:
+                Get Verification Result:
               </strong>{" "}
-              Instantly see detected face areas, detection confidence, and
-              optional anti-spoofing indicators.
+              View whether the faces are verified as the same person, including
+              confidence score, distance, and model info.
             </li>
           </ol>
           <p className="text-gray-600 text-sm leading-relaxed">
-            Our face extraction AI runs securely in the cloud and uses multiple
-            deep learning models to detect facial regions with precision. <br />
-            When enabled, it can also verify face authenticity using
-            anti-spoofing techniques and provide confidence metrics, ensuring
-            reliable real-time <br />
-            face data — all within <i>under 2 seconds per image</i>.
+            This face verification tool uses{" "}
+            <i>high-precision deep learning models</i> to compare facial
+            embeddings. <br />
+            All processing is done in the cloud, requiring no special hardware
+            or installation. <br />
+            Results are typically ready in <i>under 2 seconds</i> and include
+            both raw distance scores and clear pass/fail outcomes.
           </p>
         </div>
+
         <Typography
           level="body-md"
           sx={{
             marginTop: 20,
             marginBottom: 10,
-            backgroundColor: "#f9fafb",
+            backgroundColor: "#fff8e1",
             borderRadius: 8,
             padding: 3,
-            textAlign: "center",
           }}
         >
-          <strong>Looking for commercial use or API integration?</strong> <br />
+          <strong>Use Cases:</strong>
           <br />
-          We offer scalable <strong>enterprise plans</strong> and
-          high-performance APIs for businesses, startups, and research
-          institutions. Whether you need to process thousands of images daily or
-          require priority support, we’ve got you covered. <br />
           <br />
-          For pricing, API keys, service-level agreements, or technical
-          integration questions — please reach out to us at{" "}
-          <a href="mailto:contact@yourdomain.com" style={{ color: "#0B6BCB" }}>
-            morgun2282@gmail.com
-          </a>{" "}
-          and we’ll be happy to assist you.
+          🔐 <strong>Identity Verification:</strong> Compare two facial images
+          to verify if they belong to the same person.
+          <br />
+          🕵️‍♂️ <strong>Anti-Spoofing:</strong> Protect your platform from fake
+          identities and deepfakes.
+          <br />
+          📸 <strong>Smart Cropping:</strong> Automatically extract and center
+          faces from user photos.
+          <br />
+          🏫 <strong>Education & Research:</strong> Use our API for experiments
+          in machine learning, biometrics, or computer vision.
+          <br />
+          🏢 <strong>Access Control:</strong> Seamless integration with door
+          locks, security cameras, and employee monitoring systems.
         </Typography>
         <Divider sx={{ marginBottom: 3 }} />
         <Typography level="body-sm" sx={{ fontStyle: "italic", color: "#666" }}>
-          FaceAnalyze — we gonna find all of you.
+          FaceAnalyze — 2 == '2'.
         </Typography>
       </Container>
     </>
   );
 };
 
-export default ExtractFacesComponent;
+export default VerifyComponent;

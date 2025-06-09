@@ -1,0 +1,30 @@
+.marquee-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  background-color: #1e1e1e;
+  border-radius: 16px;
+}
+
+.marquee {
+  display: flex;
+  width: fit-content;
+  animation: marquee 10s linear infinite;
+}
+
+.marquee-img {
+  max-width: 310px; /* или нужная ширина */
+  height: 575px;
+  object-fit: cover;
+  margin-right: 30px;
+}
+
+/* Ключевые кадры анимации */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
