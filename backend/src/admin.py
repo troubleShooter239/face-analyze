@@ -1,6 +1,7 @@
 import base64
 import binascii
 import secrets
+from typing import Any
 
 from fastapi import FastAPI
 from sqladmin import ModelView
@@ -12,6 +13,7 @@ from starlette.responses import Response, JSONResponse
 from starlette.middleware import Middleware
 from starlette.middleware.authentication import AuthenticationMiddleware
 
+from src.services.security import pwd_context
 from .models import Admin, User, AIResult, Image, Log, AdminLog
 from .database import engine
 from .utils.config import admin_settings
@@ -61,6 +63,16 @@ class Admin_(ModelView, model=Admin):
 
     name = "Admin"
     icon = "fa-solid fa-user"
+    
+    async def on_model_create(self, data: dict[str, Any], request):
+        print(data)
+        if data.get('password'):
+            data['password'] = pwd_context.hash(data['password'])
+
+    async def on_model_update(self, data: dict[str, Any], model, request):
+        if data.get('password'):
+            data['password'] = pwd_context.hash(data['password'])
+
 
 
 class User_(ModelView, model=User):
@@ -70,6 +82,14 @@ class User_(ModelView, model=User):
     
     name = 'User'
     icon = "fa-solid fa-user"
+    
+    async def on_model_create(self, data: dict[str, Any], request):
+        if data.get('password'):
+            data['password'] = pwd_context.hash(data['password'])
+
+    async def on_model_update(self, data: dict[str, Any], model, request):
+        if data.get('password'):
+            data['password'] = pwd_context.hash(data['password'])
 
 
 class AIResult_(ModelView, model=AIResult):
