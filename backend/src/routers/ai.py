@@ -4,7 +4,7 @@ from io import BytesIO
 
 from PIL.Image import open
 from deepface import DeepFace
-from fastapi import APIRouter, File, UploadFile, Query
+from fastapi import APIRouter, File, Response, UploadFile, Query
 from numpy import array
 
 from src.dependencies import db_d, is_user_d
@@ -21,7 +21,7 @@ router = APIRouter(prefix='/ai', tags=['ai processing'], dependencies=[is_user_d
 @router.post('/analyze')
 async def analyze(db: db_d, token: str, img: UploadFile = File(...),
                   actions: list[str] = Query(("emotion", "age", "gender", "race")),
-                  anti_spoofing: bool = False) -> AnalyzeResponse:
+                  anti_spoofing: bool = False):
     """Analyze facial attributes such as age, gender, emotion, and race in the provided image.
 
     ### Request Parameters:
@@ -124,8 +124,7 @@ async def analyze(db: db_d, token: str, img: UploadFile = File(...),
                                                         anti_spoofing=anti_spoofing)])
     except Exception as e:
         logger.warn(f'Could not analyze image {e}')
-        return []
-
+        return Response(str(e), status_code=404)
     result_to_save = AIResult(image_id=img_to_save.id, metric_name='analyze', metric_value=result.model_dump_json(),
                               analyzed_at=datetime.now(UTC))
     db.add(result_to_save)
@@ -144,7 +143,7 @@ async def analyze(db: db_d, token: str, img: UploadFile = File(...),
 
 @router.post('/extract_faces')
 async def extract_faces(token: str, db: db_d, img: UploadFile = File(...),
-                        anti_spoofing: bool = False) -> ExtractFacesResponse:
+                        anti_spoofing: bool = False):
     """Extract faces from a given image.
 
     ### Request Parameters:
@@ -220,8 +219,8 @@ async def extract_faces(token: str, db: db_d, img: UploadFile = File(...),
             i.pop('face')
         result = ExtractFacesResult(result=t)
     except Exception as e:
-        logger.warn(f'Could not extract faces from image {e}')
-        return []
+        logger.warn(f'Could not analyze image {e}')
+        return Response(str(e), status_code=404)
 
     result_to_save = AIResult(image_id=img_to_save.id, metric_name='analyze', metric_value=result.model_dump_json(),
                               analyzed_at=datetime.now(UTC))
@@ -241,7 +240,7 @@ async def extract_faces(token: str, db: db_d, img: UploadFile = File(...),
 
 @router.post('/verify')
 async def verify(token: str, db: db_d, img1: UploadFile = File(...), img2: UploadFile = File(...),
-                 anti_spoofing: bool = False) -> VerifyResponse:
+                 anti_spoofing: bool = False):
     """Verify if two images represent the same person or different persons.
 
     ### Request Parameters:
@@ -324,8 +323,8 @@ async def verify(token: str, db: db_d, img1: UploadFile = File(...), img2: Uploa
         result = VerifyResponse(**DeepFace.verify(array(open(BytesIO(image1))),
                                                   array(open(BytesIO(image2))), anti_spoofing=anti_spoofing))
     except Exception as e:
-        logger.warn(f'Could not verify images {e}')
-        raise
+        logger.warn(f'Could not verify image {e}')
+        return Response(str(e), status_code=404)
 
     result_to_save = AIResult(image_id=img_to_save.id, metric_name='analyze', metric_value=result.model_dump_json(),
                               analyzed_at=datetime.now(UTC))

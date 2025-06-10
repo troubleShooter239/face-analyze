@@ -8,13 +8,11 @@ import { UploadFile } from "@mui/icons-material";
 import { Divider, FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/joy/Checkbox";
 import ImageMarquee from "../../img-marquee";
-import FaceIcon from "@mui/icons-material/Face";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import SecurityIcon from "@mui/icons-material/Security";
 import WcIcon from "@mui/icons-material/Wc";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import PublicIcon from "@mui/icons-material/Public";
-import CropFreeIcon from "@mui/icons-material/CropFree";
 
 const AnalyzeComponent = () => {
   const [image, setImage] = useState<File | null>(null); // Загруженное изображение
@@ -67,9 +65,9 @@ const AnalyzeComponent = () => {
       selectedActions.gender ? "gender" : "",
       selectedActions.race ? "race" : "",
     ].filter(Boolean) as [string, string, string, string];
-
+    let response: any;
     try {
-      const response = await axios.post(ANALYZE, formData, {
+      response = await axios.post(ANALYZE, formData, {
         params: {
           actions,
           token: localStorage.getItem("token")!,
@@ -83,7 +81,7 @@ const AnalyzeComponent = () => {
       setLoading(false);
     } catch (err: any) {
       console.log(err.message);
-      setError("Произошла ошибка при обработке изображения");
+      setError("Произошла ошибка при обработке изображения: спуф-атака");
       setLoading(false);
     }
   };

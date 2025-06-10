@@ -10,7 +10,7 @@ from .extra import UserRole
 class AIResult(Base):
     __tablename__ = 'ai_results'
     id: Mapped[int] = mapped_column(primary_key=True, index=True, autoincrement=True)
-    image_id: Mapped[int] = mapped_column(ForeignKey("images.id"))
+    image_id: Mapped[int | None] = mapped_column(ForeignKey("images.id", ondelete='CASCADE'))
     metric_name: Mapped[str] = mapped_column()
     metric_value: Mapped[str] = mapped_column()
     analyzed_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True))
@@ -21,7 +21,7 @@ class AIResult(Base):
 class Image(Base):
     __tablename__ = 'images'
     id: Mapped[int] = mapped_column(primary_key=True, index=True, autoincrement=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete='CASCADE'))
     image: Mapped[str] = mapped_column()
 
     user: Mapped["User"] = relationship("User", backref="images")
@@ -31,7 +31,7 @@ class Image(Base):
 class Log(Base):
     __tablename__ = 'logs'
     id: Mapped[int] = mapped_column(primary_key=True, index=True, autoincrement=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete='CASCADE'))
     time: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True))
     action: Mapped[str] = mapped_column()
 
@@ -41,7 +41,7 @@ class Log(Base):
 class AdminLog(Base):
     __tablename__ = "admins_logs"
     id: Mapped[int] = mapped_column(primary_key=True, index=True, autoincrement=True)
-    admin_id: Mapped[int] = mapped_column(ForeignKey("admins.id"))
+    admin_id: Mapped[int | None] = mapped_column(ForeignKey("admins.id", ondelete='CASCADE'))
     time: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True))
     action: Mapped[str] = mapped_column()
 

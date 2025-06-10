@@ -59,7 +59,7 @@ const ExtractFacesComponent = () => {
       setLoading(false);
     } catch (err: any) {
       console.log(err.message);
-      setError("Произошла ошибка при обработке изображения");
+      setError("Произошла ошибка при обработке изображения: спуф-атака");
       setLoading(false);
     }
   };
