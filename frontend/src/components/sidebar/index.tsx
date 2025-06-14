@@ -58,23 +58,23 @@ const Sidebar = () => {
         anchor="left"
       >
         <ModalClose />
-        <DialogTitle>Menu</DialogTitle>
+        <DialogTitle>Меню</DialogTitle>
 
         <Box role="presentation" sx={{ p: 2 }}>
           <List>
             <ListItem>
               <ListItemButton onClick={() => navigate("/analyze")}>
-                Analyze
+                Анализатор
               </ListItemButton>
             </ListItem>
             <ListItem>
               <ListItemButton onClick={() => navigate("/extract-faces")}>
-                Extract faces
+                Экстрактор лиц
               </ListItemButton>
             </ListItem>
             <ListItem>
               <ListItemButton onClick={() => navigate("/verify")}>
-                Verify
+                Верификатор
               </ListItemButton>
             </ListItem>
           </List>
@@ -82,17 +82,17 @@ const Sidebar = () => {
           <List>
             <ListItem>
               <ListItemButton onClick={() => navigate("/about-us")}>
-                About us
+                О нас
               </ListItemButton>
             </ListItem>
             <ListItem>
               <ListItemButton onClick={() => navigate("/privacy-policy")}>
-                Privacy policy
+                Политика конфиденциальности
               </ListItemButton>
             </ListItem>
             <ListItem>
               <ListItemButton onClick={() => navigate("/terms-of-use")}>
-                Terms of use
+                Правила пользования{" "}
               </ListItemButton>
             </ListItem>
           </List>
@@ -100,7 +100,7 @@ const Sidebar = () => {
           <List>
             <ListItem>
               <ListItemButton onClick={logout}>
-                {token.email} - Log out?
+                {token.email} - Выйти из аккаунта?
               </ListItemButton>
             </ListItem>
           </List>

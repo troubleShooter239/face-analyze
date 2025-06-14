@@ -5,7 +5,13 @@ import { VERIFY } from "../../../utils/constants";
 import Header from "../../header";
 import { Box, Button, CircularProgress, Container, Typography } from "@mui/joy";
 import { UploadFile } from "@mui/icons-material";
-import { Divider, FormControlLabel } from "@mui/material";
+import {
+  Divider,
+  FormControlLabel,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 import Checkbox from "@mui/joy/Checkbox";
 import FaceIcon from "@mui/icons-material/Face";
 import SecurityIcon from "@mui/icons-material/Security";
@@ -43,7 +49,10 @@ const VerifyComponent = () => {
 
   // Отправка изображения на сервер
   const handleSubmit = async () => {
-    if (!image1 || !image2) return;
+    if (!image1 || !image2) {
+      setError("Недостаточное количество фотографий!");
+      return;
+    }
     setLoading(true);
     const formData = new FormData();
     formData.append("img1", image1);
@@ -68,19 +77,6 @@ const VerifyComponent = () => {
     }
   };
 
-  const styles = {
-    container: {
-      padding: "20px",
-    },
-    card: {
-      marginBottom: "20px",
-      padding: "15px",
-      border: "1px solid #ccc",
-      borderRadius: "8px",
-      backgroundColor: "#f9f9f9",
-    },
-  };
-
   return (
     <>
       <Header />
@@ -91,10 +87,10 @@ const VerifyComponent = () => {
             level="h2"
             sx={{ marginBottom: 2, color: "mediumslateblue" }}
           >
-            FaceAnalyze - AI processing images
+            Обработка изображений с помощью ИИ{" "}
           </Typography>
           <Typography level="body-lg" sx={{ marginBottom: 8 }}>
-            Loved by over 1 million users
+            Любимец огромного количества пользователей!{" "}
           </Typography>
           <Typography
             level="body-lg"
@@ -104,14 +100,20 @@ const VerifyComponent = () => {
               borderRadius: 8,
             }}
           >
-            Verify identity by comparing two facial images using advanced neural
-            networks. <br />
-            Our system analyzes facial features, calculates similarity distance,
-            and determines whether the two images represent the same person —
-            all in a matter of seconds.
+            Проверьте личность, сравнив два изображения лица с помощью
+            продвинутых нейронных сетей. <br />
+            Наша система анализирует черты лица, вычисляет коэффициент сходства
+            и определяет, изображён ли на фотографиях один и тот же человек —
+            всего за несколько секунд.
           </Typography>
         </Box>
-        <Box sx={{ textAlign: "center" }}>
+        <Box
+          sx={{
+            textAlign: "center",
+            boxShadow: "5px 5px 5px 5px gray",
+            padding: 8,
+          }}
+        >
           <img
             src="https://i.ibb.co/C5vZmF8j/ID-verification-2773188637.png"
             alt="face-verify"
@@ -121,13 +123,11 @@ const VerifyComponent = () => {
             }}
           />
         </Box>
-        {/* <ImageMarquee /> */}
-
         {/* Кнопка для загрузки изображения */}
         <Box sx={{ textAlign: "center", marginBottom: 4, marginTop: 12 }}>
           <Button component="label" variant="soft" color="primary">
             <UploadFile />
-            Upload
+            Загрузить файлы
             <input
               multiple
               type="file"
@@ -167,28 +167,28 @@ const VerifyComponent = () => {
         {/* Форма для anti-spoofing */}
         <Box sx={{ textAlign: "center", marginBottom: 4 }}>
           <FormControlLabel
+            sx={{ gap: 1 }}
             control={
               <Checkbox
                 checked={antiSpoofing}
                 onChange={handleAntiSpoofingChange}
               />
             }
-            label="Enable Anti-Spoofing"
+            label="Защита от спуф-атак"
           />
         </Box>
 
         {/* Кнопка для отправки изображения на сервер */}
         <Box sx={{ textAlign: "center", marginBottom: 16 }}>
           <Button
-            variant="soft"
-            color="neutral"
             onClick={handleSubmit}
             disabled={loading || (!image1 && !image2)}
+            sx={{ fontSize: 18 }}
           >
             {loading ? (
               <CircularProgress size={"md"} sx={{ color: "white" }} />
             ) : (
-              "Extract Faces"
+              "Верификация лиц"
             )}
           </Button>
         </Box>
@@ -201,59 +201,43 @@ const VerifyComponent = () => {
               borderRadius: "8px",
               border: "1px solid #ccc",
               marginTop: 4,
+              gap: 4,
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <Typography level="h3" sx={{ marginBottom: 2 }}>
-              Summary:
-            </Typography>
+            <Typography level="h2">Результаты</Typography>
             {results && (
               <Box
                 sx={{
-                  marginBottom: 3,
-                  padding: 2,
+                  padding: 4,
                   borderRadius: "8px",
                   border: "1px solid #e0e0e0",
                 }}
               >
-                <Typography variant="soft">
-                  <CheckCircleIcon fontSize="small" sx={{ mr: 1 }} />
-                  Verified: {results.verified ? "Yes" : "No"}
-                </Typography>
-
-                <Box sx={{ marginTop: 2 }}>
-                  <Typography variant="soft">
-                    <SecurityIcon fontSize="small" sx={{ mr: 1 }} />
-                    Distance: {results.distance.toFixed(4)}
+                <Box sx={{ marginTop: 2, backgroundColor: "" }}>
+                  <Typography fontSize="22px">
+                    <CheckCircleIcon fontSize="small" sx={{ mr: 2 }} />
+                    Один и тот же человек: {results.verified ? "ДА" : "НЕТ"}
+                  </Typography>
+                  <Typography fontSize="22px">
+                    <SecurityIcon fontSize="small" sx={{ mr: 2 }} />
+                    Расстояние: {results.distance.toFixed(2)}
                   </Typography>
 
-                  <Typography variant="soft">
-                    <CropFreeIcon fontSize="small" sx={{ mr: 1 }} />
-                    Threshold: {results.threshold}
+                  <Typography fontSize="22px">
+                    <CropFreeIcon fontSize="small" sx={{ mr: 2 }} />
+                    Пороговое значение: {results.threshold}
+                  </Typography>
+                  <Typography fontSize="22px">
+                    <FaceIcon fontSize="small" sx={{ mr: 2 }} />
+                    Используемая модель: {results.model}
                   </Typography>
 
-                  <Typography variant="soft">
-                    <FaceIcon fontSize="small" sx={{ mr: 1 }} />
-                    Model: {results.model}
+                  <Typography fontSize="22px">
+                    <AccessTimeIcon fontSize="small" sx={{ mr: 2 }} />
+                    Занятое время: {results.time.toFixed(2)}s
                   </Typography>
-
-                  <Typography variant="soft">
-                    <AccessTimeIcon fontSize="small" sx={{ mr: 1 }} />
-                    Time: {results.time.toFixed(2)}s
-                  </Typography>
-                </Box>
-
-                <Box sx={{ marginTop: 2 }}>
-                  {Object.entries(results.facial_areas).map(
-                    ([imgKey, region], idx) => (
-                      <Box key={imgKey} sx={{ marginBottom: 1 }}>
-                        <Typography variant="soft">
-                          <ImageIcon fontSize="small" sx={{ mr: 1 }} />
-                          {imgKey.toUpperCase()} Region: x={region.x}, y=
-                          {region.y}, w={region.w}, h={region.h}
-                        </Typography>
-                      </Box>
-                    )
-                  )}
                 </Box>
               </Box>
             )}
@@ -276,83 +260,76 @@ const VerifyComponent = () => {
             </Typography>
           </Box>
         )}
-        {results && (
-          <Box>
-            <h1>Face Verification Result:</h1>
-            <div style={styles.card}>
-              <h3>Verification</h3>
-
-              <p>
-                <strong>Verified:</strong> {results.verified ? "Yes" : "No"}
-              </p>
-
-              <p>
-                <strong>Distance:</strong> {results.distance}
-              </p>
-
-              <p>
-                <strong>Threshold:</strong> {results.threshold}
-              </p>
-
-              <p>
-                <strong>Model:</strong> {results.model}
-              </p>
-
-              <p>
-                <strong>Time:</strong> {results.time}s
-              </p>
-
-              <div>
-                <h4>Facial Areas:</h4>
-                {Object.entries(results.facial_areas).map(([imgKey, area]) => (
-                  <div key={imgKey} style={{ marginBottom: "1em" }}>
-                    <h5>{imgKey.toUpperCase()}:</h5>
-                    <p>
-                      Coordinates: ({area.x}, {area.y})
-                    </p>
-                    <p>
-                      Width: {area.w}, Height: {area.h}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Box>
-        )}
-
-        <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-xl">
-          <h3 className="text-2xl font-bold mb-4 text-gray-900">
-            How Face Verification Works
-          </h3>
-          <ol className="list-decimal list-inside text-gray-700 space-y-2 mb-6">
-            <li>
-              <strong style={{ color: "#0B6BCB" }}>Upload Two Images:</strong>{" "}
-              Select or drag and drop two facial images to compare. Supported
-              formats include JPG and PNG.
-            </li>
-            <li>
-              <strong style={{ color: "#0B6BCB" }}>Start Verification:</strong>{" "}
-              Our model will extract facial embeddings and compute similarity
-              using state-of-the-art metrics.
-            </li>
-            <li>
-              <strong style={{ color: "#0B6BCB" }}>
-                Get Verification Result:
-              </strong>{" "}
-              View whether the faces are verified as the same person, including
-              confidence score, distance, and model info.
-            </li>
-          </ol>
-          <p className="text-gray-600 text-sm leading-relaxed">
-            This face verification tool uses{" "}
-            <i>high-precision deep learning models</i> to compare facial
-            embeddings. <br />
-            All processing is done in the cloud, requiring no special hardware
-            or installation. <br />
-            Results are typically ready in <i>under 2 seconds</i> and include
-            both raw distance scores and clear pass/fail outcomes.
-          </p>
-        </div>
+        <Typography gutterBottom fontWeight="bold" fontSize={24}>
+          Как работает ИИ верификация лиц
+        </Typography>
+        <List sx={{ listStyleType: "decimal", pl: 2 }}>
+          <ListItem sx={{ display: "list-item", py: 1 }}>
+            <ListItemText
+              primary={
+                <>
+                  <Typography
+                    component="span"
+                    fontWeight="bold"
+                    color="primary"
+                    fontSize={20}
+                  >
+                    Загрузите 2 изображения:
+                  </Typography>{" "}
+                  Выберите или перетащите два изображения лица для сравнения.
+                  Поддерживаемые форматы включают JPG и PNG.
+                </>
+              }
+            />
+          </ListItem>
+          <ListItem sx={{ display: "list-item", py: 1 }}>
+            <ListItemText
+              primary={
+                <>
+                  <Typography
+                    component="span"
+                    fontWeight="bold"
+                    color="primary"
+                    fontSize={20}
+                  >
+                    Запустите верификацию:
+                  </Typography>{" "}
+                  Наша модель извлечет вложения лиц и вычислит сходство,
+                  используя самые современные метрики.
+                </>
+              }
+            />
+          </ListItem>
+          <ListItem sx={{ display: "list-item", py: 1 }}>
+            <ListItemText
+              primary={
+                <>
+                  <Typography
+                    component="span"
+                    fontWeight="bold"
+                    color="primary"
+                    fontSize={20}
+                  >
+                    Просмотрите результаты верификации:
+                  </Typography>{" "}
+                  Посмотрите, верифицированы ли лица как один и тот же человек,
+                  включая оценку достоверности, расстояние и информацию о
+                  модели.
+                </>
+              }
+            />
+          </ListItem>
+        </List>
+        <Typography mt={3} fontSize={20}>
+          Этот инструмент проверки лиц использует{" "}
+          <i>высокоточные модели глубокого обучения</i> для сравнения лиц.{" "}
+          <br />
+          Вся обработка выполняется в облаке, не требуя специального
+          оборудования или установки. <br />
+          Результаты обычно готовы <i>менее чем за 2 секунды</i> и включают как
+          необработанные оценки расстояния, так и четкие результаты
+          прохождения/провала.
+        </Typography>
 
         <Typography
           level="body-md"
@@ -362,29 +339,32 @@ const VerifyComponent = () => {
             backgroundColor: "#fff8e1",
             borderRadius: 8,
             padding: 3,
+            fontSize: 20,
           }}
         >
-          <strong>Use Cases:</strong>
+          <strong>Сценарии использования:</strong>
           <br />
           <br />
-          🔐 <strong>Identity Verification:</strong> Compare two facial images
-          to verify if they belong to the same person.
+          🔐 <strong>Проверка личности:</strong> Сравнивайте два изображения
+          лиц, чтобы определить, принадлежат ли они одному человеку.
           <br />
-          🕵️‍♂️ <strong>Anti-Spoofing:</strong> Protect your platform from fake
-          identities and deepfakes.
+          🕵️‍♂️ <strong>Защита от подделок:</strong> Защитите вашу платформу от
+          фальшивых личностей и дипфейков.
           <br />
-          📸 <strong>Smart Cropping:</strong> Automatically extract and center
-          faces from user photos.
+          📸 <strong>Умная обрезка:</strong> Автоматически извлекайте и
+          центрируйте лица на пользовательских фотографиях.
           <br />
-          🏫 <strong>Education & Research:</strong> Use our API for experiments
-          in machine learning, biometrics, or computer vision.
+          🏫 <strong>Образование и исследования:</strong> Используйте наш API
+          для экспериментов в области машинного обучения, биометрии или
+          компьютерного зрения.
           <br />
-          🏢 <strong>Access Control:</strong> Seamless integration with door
-          locks, security cameras, and employee monitoring systems.
+          🏢 <strong>Контроль доступа:</strong> Легкая интеграция с дверными
+          замками, камерами наблюдения и системами мониторинга сотрудников.
         </Typography>
+
         <Divider sx={{ marginBottom: 3 }} />
         <Typography level="body-sm" sx={{ fontStyle: "italic", color: "#666" }}>
-          FaceAnalyze — 2 == '2'.
+          Глубокий анализ лица человека — 2 == '2'.
         </Typography>
       </Container>
     </>

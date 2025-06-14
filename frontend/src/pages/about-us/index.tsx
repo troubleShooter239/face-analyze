@@ -23,30 +23,31 @@ const AboutUs = () => {
           level="h1"
           sx={{ fontSize: "3rem", fontWeight: "bold", marginBottom: 2 }}
         >
-          About Us
+          О нас
         </Typography>
         <Divider sx={{ marginBottom: 3 }} />
         <Box sx={{ maxWidth: "800px", textAlign: "start" }}>
           <Typography level="body-lg" sx={{ marginBottom: 3 }}>
-            Welcome to <strong>FaceAnalyze</strong> — where artificial
-            intelligence meets human expression. We are a team of passionate AI
-            engineers, researchers, and visionaries driven by a single goal:
-            making facial analysis more accessible, reliable, and insightful
-            than ever before.
+            Добро пожаловать в <strong>Глубокий Анализ Лица Человека</strong> —
+            место, где искусственный интеллект встречается с человеческим
+            выражением. Мы — команда увлечённых инженеров ИИ, исследователей и
+            новаторов, движимая одной целью: сделать анализ лица более
+            доступным, надёжным и глубоким, чем когда-либо прежде.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2 }}>
-            Our platform uses state-of-the-art deep learning models to analyze
-            facial features, expressions, and emotions — all within seconds.
-            Whether you're verifying identity, detecting spoofing, or building a
-            smarter product, <strong>FaceAnalyze</strong> offers you powerful
-            tools backed by science and cutting-edge tech.
+            Наша платформа использует передовые модели глубокого обучения для
+            анализа черт лица, выражений и эмоций — всего за считаные секунды.
+            Хотите ли вы подтвердить личность, выявить подделку или создать
+            более умный продукт — <strong>Глубокий Анализ Лица Человека</strong>{" "}
+            предлагает вам мощные инструменты, основанные на науке и передовых
+            технологиях.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2 }}>
-            We believe in ethical AI. Your data is processed securely, never
-            shared with third parties, and always used to serve your interests.
-            Our mission is to build <i>trust through transparency</i>.
+            Мы верим в этичный ИИ. Ваши данные обрабатываются безопасно, никогда
+            не передаются третьим лицам и всегда используются только в ваших
+            интересах. Наша миссия — <i>строить доверие через прозрачность</i>.
           </Typography>
 
           <Typography
@@ -58,25 +59,27 @@ const AboutUs = () => {
               marginBottom: 2,
             }}
           >
-            🌍 Who We Help
+            🌍 Кому мы помогаем
           </Typography>
 
           <ul style={{ marginLeft: "1rem", marginBottom: "2rem" }}>
             <li>
-              <strong>Developers & Startups:</strong> Easily integrate facial
-              verification into your apps via our fast, modern API.
+              <strong>Разработчики и стартапы:</strong> Легко интегрируйте
+              проверку лица в свои приложения через наш быстрый и современный
+              API.
             </li>
             <li>
-              <strong>Enterprises:</strong> Use our scalable cloud engine to
-              protect and identify customers in real time.
+              <strong>Предприятия:</strong> Используйте наше масштабируемое
+              облачное решение для защиты и идентификации клиентов в реальном
+              времени.
             </li>
             <li>
-              <strong>Researchers:</strong> Explore facial metrics and emotional
-              data with precision and accuracy.
+              <strong>Исследователи:</strong> Исследуйте параметры лица и
+              эмоциональные данные с высокой точностью.
             </li>
             <li>
-              <strong>Everyday Users:</strong> Curious about your own face?
-              Upload a selfie and discover what AI sees.
+              <strong>Обычные пользователи:</strong> Интересно, что скажет ИИ о
+              вашем лице? Загрузите селфи и узнайте!
             </li>
           </ul>
 
@@ -84,19 +87,20 @@ const AboutUs = () => {
             level="h2"
             sx={{ fontSize: "2rem", fontWeight: "bold", marginBottom: 2 }}
           >
-            🚀 Innovation at Our Core
+            🚀 Инновации в основе
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2 }}>
-            FaceAnalyze continuously improves. We experiment, research, and
-            deploy models trained on millions of faces from diverse backgrounds.
-            Our AI is trained to be inclusive, fair, and representative.
+            Глубокий Анализ Лица Человека постоянно развивается. Мы
+            экспериментируем, проводим исследования и внедряем модели, обученные
+            на миллионах лиц из разных слоёв общества. Наш ИИ обучен быть
+            инклюзивным, справедливым и репрезентативным.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2 }}>
-            With advanced spoofing detection, facial landmark mapping, and
-            emotion tracking, we’re paving the way for the next generation of
-            face-based applications.
+            Благодаря продвинутому обнаружению подделок, определению ключевых
+            точек лица и отслеживанию эмоций, мы прокладываем путь для
+            следующего поколения приложений на основе анализа лица.
           </Typography>
 
           <Typography
@@ -108,22 +112,22 @@ const AboutUs = () => {
               marginBottom: 2,
             }}
           >
-            🤝 Let’s Build the Future Together
+            🤝 Давайте строить будущее вместе
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 3 }}>
-            FaceAnalyze is not just a tool — it’s a platform for builders,
-            dreamers, and creators. Our API-first approach, robust
-            documentation, and supportive team make it easy for anyone to
-            integrate facial intelligence into their workflows.
+            FaceAnalyze — это не просто инструмент, а платформа для создателей,
+            мечтателей и новаторов. Наш подход с приоритетом на API, подробная
+            документация и поддерживающая команда позволяют легко интегрировать
+            интеллектуальный анализ лица в любые процессы.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 4 }}>
-            <strong>Have a question?</strong> Need a demo? Interested in our{" "}
-            <strong>commercial license</strong> or custom solution? Reach out to
-            us at{" "}
+            <strong>Есть вопрос?</strong> Нужна демонстрация? Интересуетесь{" "}
+            <strong>коммерческой лицензией</strong> или индивидуальным решением?
+            Напишите нам на{" "}
             <a href="mailto:contact@faceanalyze.ai">contact@faceanalyze.ai</a> —
-            we’d love to hear from you!
+            будем рады пообщаться!
           </Typography>
 
           <Divider sx={{ marginBottom: 3 }} />
@@ -132,7 +136,7 @@ const AboutUs = () => {
             level="body-sm"
             sx={{ fontStyle: "italic", color: "#666" }}
           >
-            FaceAnalyze — AI with a human face.
+            Глубокий Анализ Лица Человека — ИИ с человеческим лицом.
           </Typography>
         </Box>
       </Box>
