@@ -23,94 +23,96 @@ const PrivacyPolicy = () => {
           level="h1"
           sx={{ fontSize: "3rem", fontWeight: "bold", marginBottom: 1 }}
         >
-          Privacy Policy
+          Политика конфиденциальности
         </Typography>
         <Divider sx={{ marginBottom: 2 }} />
         <div style={{ maxWidth: "800px", textAlign: "start" }}>
           <Typography level="body-lg" sx={{ marginBottom: 4, fontSize: 20 }}>
-            Your privacy is important to us. At FaceAnalyze, we take your data
-            security seriously. This Privacy Policy outlines how we collect,
-            use, store, and protect your personal information across all our
-            services.
+            Ваша конфиденциальность важна для нас. В нашей платформе мы серьезно
+            относимся к безопасности ваших данных. Настоящая Политика
+            конфиденциальности описывает, как мы собираем, используем, храним и
+            защищаем вашу личную информацию во всех наших сервисах.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2, fontSize: 20 }}>
-            <strong>1. Information Collection:</strong> We collect personal
-            information that you provide during registration or while using our
-            services. This includes but is not limited to email addresses, IP
-            addresses, preferences, uploaded images, and metadata associated
-            with your usage.
+            <strong>1. Сбор информации:</strong> Мы собираем личные данные,
+            которые вы предоставляете при регистрации или использовании наших
+            сервисов. Это включает, но не ограничивается, адресами электронной
+            почты, IP-адресами, предпочтениями, загруженными изображениями и
+            метаданными, связанными с использованием.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2, fontSize: 20 }}>
-            <strong>2. Facial Image Processing:</strong> Facial data uploaded by
-            users is processed securely and is never shared or used beyond your
-            session unless explicitly permitted. Images may be temporarily
-            stored for performance and analysis purposes but are automatically
-            deleted after processing.
+            <strong>2. Обработка изображений лиц:</strong> Загружаемые
+            пользователями данные обрабатываются безопасно и не передаются
+            третьим лицам и не используются за пределами вашей сессии без вашего
+            разрешения. Изображения могут временно храниться для целей
+            производительности и анализа, но автоматически удаляются после
+            обработки.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2, fontSize: 20 }}>
-            <strong>3. Data Usage:</strong> We use your data only to improve our
-            services, personalize your experience, and provide you with accurate
-            facial analysis results. We may also use aggregate and anonymized
-            data for research and development.
+            <strong>3. Использование данных:</strong> Мы используем ваши данные
+            только для улучшения наших сервисов, персонализации вашего опыта и
+            предоставления точных результатов анализа. Мы также можем
+            использовать агрегированные и анонимные данные в исследовательских и
+            разработческих целях.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2, fontSize: 20 }}>
-            <strong>4. Cookies and Tracking Technologies:</strong> We use
-            cookies to improve functionality, remember user preferences, and
-            analyze traffic patterns. You may disable cookies through your
-            browser settings.
+            <strong>4. Файлы cookie и технологии отслеживания:</strong> Мы
+            используем cookie-файлы для улучшения функциональности, запоминания
+            пользовательских предпочтений и анализа трафика. Вы можете отключить
+            cookie в настройках браузера.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2, fontSize: 20 }}>
-            <strong>5. Data Retention:</strong> Personal data is retained only
-            as long as necessary to fulfill the purpose for which it was
-            collected, or as required by applicable laws.
+            <strong>5. Хранение данных:</strong> Личные данные хранятся только
+            столько, сколько необходимо для достижения целей их сбора или в
+            соответствии с требованиями законодательства.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2, fontSize: 20 }}>
-            <strong>6. Data Protection:</strong> We implement industry-standard
-            security measures to protect your data from unauthorized access,
-            alteration, or destruction. This includes encryption, firewalls, and
-            secure storage practices.
+            <strong>6. Защита данных:</strong> Мы применяем отраслевые меры
+            безопасности для защиты ваших данных от несанкционированного
+            доступа, изменения или уничтожения. Это включает шифрование,
+            брандмауэры и безопасное хранение.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2, fontSize: 20 }}>
-            <strong>7. Third-Party Sharing:</strong> We do not sell or rent your
-            data. Data may be shared with trusted service providers under strict
-            confidentiality agreements and only for purposes of improving your
-            experience or complying with legal obligations.
+            <strong>7. Передача третьим лицам:</strong> Мы не продаем и не сдаем
+            ваши данные в аренду. Данные могут быть переданы надежным
+            поставщикам услуг по строгим соглашениям о конфиденциальности
+            исключительно для улучшения ваших впечатлений или выполнения
+            юридических обязательств.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2, fontSize: 20 }}>
-            <strong>8. User Rights:</strong> You may access, correct, or delete
-            your personal information by contacting us at
-            support@faceanalyze.ai. We respect your rights and provide an easy
-            mechanism to control your data.
+            <strong>8. Права пользователя:</strong> Вы можете получить доступ,
+            исправить или удалить свою личную информацию, связавшись с нами по
+            адресу support@faceanalyze.ai. Мы уважаем ваши права и предоставляем
+            простой механизм управления данными.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2, fontSize: 20 }}>
-            <strong>9. Children's Privacy:</strong> Our services are not
-            directed to individuals under the age of 13. We do not knowingly
-            collect personal information from children. If we learn that we have
-            collected data from a child, we will take steps to delete such
-            information promptly.
+            <strong>9. Конфиденциальность детей:</strong> Наши сервисы не
+            предназначены для лиц младше 13 лет. Мы не собираем сознательно
+            личную информацию от детей. Если станет известно, что такие данные
+            были собраны, мы немедленно удалим их.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2, fontSize: 20 }}>
-            <strong>10. Changes to Policy:</strong> We reserve the right to
-            modify this Privacy Policy at any time. Updates will be posted on
-            this page with the date of revision. We encourage users to review
-            this policy periodically.
+            <strong>10. Изменения политики:</strong> Мы оставляем за собой право
+            вносить изменения в настоящую Политику конфиденциальности в любое
+            время. Обновления публикуются на этой странице с указанием даты
+            изменения. Мы рекомендуем регулярно просматривать политику.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 2, fontSize: 20 }}>
-            <strong>11. Contact Us:</strong> For any questions, concerns, or to
-            exercise your data rights, please email us at{" "}
+            <strong>11. Связь с нами:</strong> По всем вопросам, замечаниям или
+            для реализации своих прав в отношении данных напишите нам на адрес{" "}
             <a href="mailto:support@faceanalyze.ai">support@faceanalyze.ai</a>.
-            We are here to help.
+            Мы всегда готовы помочь.
           </Typography>
 
           <Divider sx={{ marginY: 3 }} />
@@ -119,12 +121,13 @@ const PrivacyPolicy = () => {
             level="body-lg"
             sx={{ marginBottom: 2, fontWeight: 600, fontSize: 20 }}
           >
-            <strong>💼 Commercial Use and API Access:</strong>
+            <strong>💼 Коммерческое использование и доступ к API:</strong>
             <br />
-            We offer powerful APIs and commercial-grade tools for enterprises,
-            research institutions, and app developers. If you're interested in
-            accessing high-volume facial analysis, real-time verification, or
-            white-label solutions — contact our business team at{" "}
+            Мы предлагаем мощные API и инструменты корпоративного уровня для
+            предприятий, исследовательских учреждений и разработчиков. Если вы
+            заинтересованы в высокообъемном анализе лиц, проверке в реальном
+            времени или white-label решениях — свяжитесь с нашей бизнес-командой
+            по адресу{" "}
             <a href="mailto:business@faceanalyze.ai">business@faceanalyze.ai</a>
             .
           </Typography>
@@ -133,23 +136,22 @@ const PrivacyPolicy = () => {
             level="body-lg"
             sx={{ marginBottom: 2, fontWeight: 600, fontSize: 20 }}
           >
-            <strong>🔒 Our Commitment to Privacy:</strong>
-            <br />
-            At FaceAnalyze, your trust is everything. Our systems are audited
-            regularly, and we comply with major data privacy laws including
-            GDPR, CCPA, and more. We never sell your data, and we keep
-            everything transparent.
+            <strong>🔒 Наша приверженность конфиденциальности:</strong>
+            <br />В нашем деле ваше доверие — главное. Наши системы регулярно
+            проходят аудит и соответствуют основным законам о защите данных,
+            включая GDPR, CCPA и другие. Мы никогда не продаем ваши данные и
+            сохраняем прозрачность.
           </Typography>
 
           <Typography
             level="body-lg"
             sx={{ marginBottom: 2, fontWeight: 600, fontSize: 20 }}
           >
-            <strong>🌐 Global Reach, Local Sensitivity:</strong>
+            <strong>🌐 Глобальный охват, локальная чувствительность:</strong>
             <br />
-            Whether you're based in Europe, the Americas, or Asia, our
-            infrastructure is designed to comply with local legal requirements
-            and deliver fast, reliable services anywhere in the world.
+            Независимо от того, находитесь ли вы в Европе, Америке или Азии,
+            наша инфраструктура соответствует местным юридическим требованиям и
+            обеспечивает быструю и надежную работу по всему миру.
           </Typography>
         </div>
       </Box>

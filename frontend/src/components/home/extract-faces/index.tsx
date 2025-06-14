@@ -5,7 +5,13 @@ import { EXTRACT } from "../../../utils/constants";
 import Header from "../../header";
 import { Box, Button, CircularProgress, Container, Typography } from "@mui/joy";
 import { UploadFile } from "@mui/icons-material";
-import { Divider, FormControlLabel } from "@mui/material";
+import {
+  Divider,
+  FormControlLabel,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 import Checkbox from "@mui/joy/Checkbox";
 import FaceIcon from "@mui/icons-material/Face";
 import SecurityIcon from "@mui/icons-material/Security";
@@ -87,10 +93,10 @@ const ExtractFacesComponent = () => {
             level="h2"
             sx={{ marginBottom: 2, color: "mediumslateblue" }}
           >
-            FaceAnalyze - AI processing images
+            Обработка изображений с помощью ИИ{" "}
           </Typography>
           <Typography level="body-lg" sx={{ marginBottom: 8 }}>
-            Loved by over 1 million users
+            Любимец огромного количества пользователей!{" "}
           </Typography>
           <Typography
             level="body-lg"
@@ -98,34 +104,42 @@ const ExtractFacesComponent = () => {
               marginBottom: 6,
               backgroundColor: "#f0f4f8",
               borderRadius: 8,
+              fontSize: 20,
             }}
           >
-            Detect and extract faces from any image with high precision. <br />
-            Our advanced face extraction engine locates facial regions,
-            pinpoints eye positions and anti-spoofing! <br />
+            Обнаруживайте и извлекайте лица с изображений с высокой точностью.{" "}
             <br />
-            Perfect for integration into security systems, attendance
-            monitoring, user authentication, and AI-powered photography
-            solutions.
+            Наш продвинутый движок определения лиц находит области лиц,
+            определяет положение глаз и поддерживает антиспуфинг! <br />
+            <br />
+            Идеально подходит для интеграции в системы безопасности, учёта
+            посещаемости, аутентификации пользователей и решений на основе ИИ.
           </Typography>
         </Box>
-        <Box sx={{ textAlign: "center" }}>
+        <Box sx={{ textAlign: "center", boxShadow: "5px 5px 5px 5px gray" }}>
           <img
             src="https://i.ibb.co/23Y2nyQv/detector-outputs-20240414.jpg"
             alt="extract-faces"
             style={{
-              height: 420,
+              height: 500,
               width: "fit-content",
             }}
           />
         </Box>
-        {/* <ImageMarquee /> */}
+        <Typography sx={{ marginTop: 4, marginBottom: 6, fontSize: 20 }}>
+          Распознавание и выравнивание лиц являются важными ранними этапами
+          современного конвейера распознавания лиц. Эксперименты показывают, что
+          обнаружение повышает точность распознавания лиц до 42%, а выравнивание
+          — до 6%. Детекторы OpenCV, Ssd, Dlib, MtCnn, Faster MtCnn, RetinaFace,
+          MediaPipe, Yolo, YuNet и CenterFace обернуты в "Глубокий Анализ Лица
+          Человека".
+        </Typography>
 
         {/* Кнопка для загрузки изображения */}
         <Box sx={{ textAlign: "center", marginBottom: 4, marginTop: 12 }}>
           <Button component="label" variant="soft" color="primary">
             <UploadFile />
-            Upload
+            Загрузить файл
             <input
               type="file"
               accept="image/*"
@@ -152,33 +166,31 @@ const ExtractFacesComponent = () => {
         {/* Форма для anti-spoofing */}
         <Box sx={{ textAlign: "center", marginBottom: 4 }}>
           <FormControlLabel
+            sx={{ gap: 1 }}
             control={
               <Checkbox
                 checked={antiSpoofing}
                 onChange={handleAntiSpoofingChange}
               />
             }
-            label="Enable Anti-Spoofing"
+            label="Защита от спуф-атак"
           />
         </Box>
 
         {/* Кнопка для отправки изображения на сервер */}
         <Box sx={{ textAlign: "center", marginBottom: 16 }}>
           <Button
-            variant="soft"
-            color="neutral"
             onClick={handleSubmit}
             disabled={loading || !image}
+            sx={{ fontSize: 18 }}
           >
             {loading ? (
               <CircularProgress size={"md"} sx={{ color: "white" }} />
             ) : (
-              "Extract Faces"
+              "Найти лица"
             )}
           </Button>
         </Box>
-
-        {/* Результаты анализа */}
         {results && !loading && (
           <Box
             sx={{
@@ -186,66 +198,67 @@ const ExtractFacesComponent = () => {
               borderRadius: "8px",
               border: "1px solid #ccc",
               marginTop: 4,
+              gap: 4,
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <Typography level="h3" sx={{ marginBottom: 2 }}>
-              Summary:
-            </Typography>
-            {results.map((face: ExtractFacesResult, index: number) => (
+            <Typography level="h2">Результаты</Typography>
+            {results.map((face, index) => (
               <Box
                 key={index}
                 sx={{
-                  marginBottom: 3,
-                  padding: 2,
+                  padding: 4,
                   borderRadius: "8px",
                   border: "1px solid #e0e0e0",
                 }}
               >
-                <Typography variant="soft">
+                <Typography fontSize="22px">
                   <FaceIcon fontSize="small" sx={{ mr: 1 }} />
-                  Face {index + 1}
+                  Лицо: № {index + 1}
                 </Typography>
 
                 <Box sx={{ marginTop: 2 }}>
-                  <Typography variant="soft">
+                  <Typography fontSize="22px">
                     <SecurityIcon fontSize="small" sx={{ mr: 1 }} />
-                    Confidence: {face.confidence.toFixed(2)}
+                    Уверенность: {face.confidence.toFixed(2)}
                   </Typography>
 
                   {typeof face.is_real === "boolean" && (
-                    <Typography variant="soft">
+                    <Typography fontSize="22px">
                       <CheckCircleIcon fontSize="small" sx={{ mr: 1 }} />
-                      Is Real: {face.is_real ? "Yes" : "No"}
+                      Реальное лицо: {face.is_real ? "Yes" : "No"}
                     </Typography>
                   )}
 
                   {typeof face.antispoof_score === "number" && (
-                    <Typography variant="soft">
+                    <Typography fontSize="22px">
                       <HelpOutlineIcon fontSize="small" sx={{ mr: 1 }} />
-                      Antispoof Score: {face.antispoof_score.toFixed(2)}
+                      Оценка анти-спуфа: {face.antispoof_score.toFixed(2)}
                     </Typography>
                   )}
                 </Box>
 
                 <Box sx={{ marginTop: 2 }}>
-                  <Typography variant="soft">
+                  <Typography fontSize="22px">
                     <CropFreeIcon fontSize="small" sx={{ mr: 1 }} />
-                    Facial area: x={face.facial_area.x}, y={face.facial_area.y},
-                    w={face.facial_area.w}, h={face.facial_area.h}
+                    Регион лица(координаты): X: {face.facial_area.x}, Y:{" "}
+                    {face.facial_area.y}, W: {face.facial_area.w}, H:{" "}
+                    {face.facial_area.h}
                   </Typography>
 
                   {face.facial_area.left_eye && (
-                    <Typography variant="soft">
+                    <Typography fontSize="22px">
                       <RemoveRedEyeIcon fontSize="small" sx={{ mr: 1 }} />
-                      Left eye: x={face.facial_area.left_eye[0]}, y=
+                      Левый глаз: X: {face.facial_area.left_eye[0]}, Y:{" "}
                       {face.facial_area.left_eye[1]}
                     </Typography>
                   )}
 
                   {face.facial_area.right_eye && (
-                    <Typography variant="soft">
+                    <Typography fontSize="22px">
                       <RemoveRedEyeIcon fontSize="small" sx={{ mr: 1 }} />
-                      Right eye: x={face.facial_area.right_eye[0]}, y=
+                      Правый глаз: X: {face.facial_area.right_eye[0]}, Y:{" "}
                       {face.facial_area.right_eye[1]}
                     </Typography>
                   )}
@@ -271,96 +284,81 @@ const ExtractFacesComponent = () => {
             </Typography>
           </Box>
         )}
-        {results && (
-          <Box>
-            <h1>All extracted faces:</h1>
-            {results.map((result, index) => (
-              <div key={index} style={styles.card}>
-                <h3>Face #{index + 1}</h3>
+        <Box
+          sx={{
+            fontSize: 20,
+            color: "text.primary",
+          }}
+        >
+          <Typography gutterBottom fontWeight="bold" fontSize={24}>
+            Как работает ИИ экстрактор лиц
+          </Typography>
 
-                <p>
-                  <strong>Confidence:</strong> {result.confidence}
-                </p>
+          <List sx={{ listStyleType: "decimal", pl: 2 }}>
+            <ListItem sx={{ display: "list-item", py: 1 }}>
+              <ListItemText
+                primary={
+                  <>
+                    <Typography
+                      component="span"
+                      fontWeight="bold"
+                      color="primary"
+                      fontSize={20}
+                    >
+                      Загрузите изображение:
+                    </Typography>{" "}
+                    Просто перетащите JPG, PNG или другие форматы изображений в
+                    наш защищённый интерфейс.
+                  </>
+                }
+              />
+            </ListItem>
+            <ListItem sx={{ display: "list-item", py: 1 }}>
+              <ListItemText
+                primary={
+                  <>
+                    <Typography
+                      component="span"
+                      fontWeight="bold"
+                      color="primary"
+                      fontSize={20}
+                    >
+                      Запустите распознавание лиц:
+                    </Typography>{" "}
+                    Наша система определит все лица на изображении и зафиксирует
+                    точные координаты.
+                  </>
+                }
+              />
+            </ListItem>
+            <ListItem sx={{ display: "list-item", py: 1 }}>
+              <ListItemText
+                primary={
+                  <>
+                    <Typography
+                      component="span"
+                      fontWeight="bold"
+                      color="primary"
+                      fontSize={20}
+                    >
+                      Оцените результаты:
+                    </Typography>{" "}
+                    Мгновенно получите области обнаруженных лиц, уровень
+                    уверенности и (опционально) показатели защиты от подделок.
+                  </>
+                }
+              />
+            </ListItem>
+          </List>
 
-                {typeof result.is_real === "boolean" && (
-                  <p>
-                    <strong>Is Real:</strong> {result.is_real ? "Yes" : "No"}
-                  </p>
-                )}
-
-                {typeof result.antispoof_score === "number" && (
-                  <p>
-                    <strong>Antispoof Score:</strong> {result.antispoof_score}
-                  </p>
-                )}
-
-                <div>
-                  <h4>Facial Area:</h4>
-                  <p>
-                    Coordinates: ({result.facial_area.x}, {result.facial_area.y}
-                    )
-                  </p>
-                  <p>
-                    Width: {result.facial_area.w}, Height:{" "}
-                    {result.facial_area.h}
-                  </p>
-                </div>
-
-                {result.facial_area.left_eye && (
-                  <div>
-                    <h4>Left Eye:</h4>
-                    <p>
-                      x: {result.facial_area.left_eye[0]}, y:{" "}
-                      {result.facial_area.left_eye[1]}
-                    </p>
-                  </div>
-                )}
-
-                {result.facial_area.right_eye && (
-                  <div>
-                    <h4>Right Eye:</h4>
-                    <p>
-                      x: {result.facial_area.right_eye[0]}, y:{" "}
-                      {result.facial_area.right_eye[1]}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </Box>
-        )}
-
-        <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-xl">
-          <h3 className="text-2xl font-bold mb-4 text-gray-900">
-            How AI Face Extractor Works
-          </h3>
-          <ol className="list-decimal list-inside text-gray-700 space-y-2 mb-6">
-            <li>
-              <strong style={{ color: "#0B6BCB" }}>Upload Your Image:</strong>{" "}
-              Drag and drop a photo (JPG, PNG, etc.) into our secure interface.
-            </li>
-            <li>
-              <strong style={{ color: "#0B6BCB" }}>Run Face Detection:</strong>{" "}
-              Our system identifies all faces in the image and captures detailed
-              region coordinates, including optional eye positions.
-            </li>
-            <li>
-              <strong style={{ color: "#0B6BCB" }}>
-                Review Detection Results:
-              </strong>{" "}
-              Instantly see detected face areas, detection confidence, and
-              optional anti-spoofing indicators.
-            </li>
-          </ol>
-          <p className="text-gray-600 text-sm leading-relaxed">
-            Our face extraction AI runs securely in the cloud and uses multiple
-            deep learning models to detect facial regions with precision. <br />
-            When enabled, it can also verify face authenticity using
-            anti-spoofing techniques and provide confidence metrics, ensuring
-            reliable real-time <br />
-            face data — all within <i>under 2 seconds per image</i>.
-          </p>
-        </div>
+          <Typography mt={3} fontSize={20}>
+            Наш ИИ для извлечения лиц безопасно работает в облаке и использует
+            несколько моделей глубокого обучения для точного определения
+            областей лиц. При включении также осуществляется проверка
+            подлинности лица с помощью методов антиспуфинга и предоставляются
+            метрики уверенности, обеспечивая надёжные данные в реальном времени.
+          </Typography>
+        </Box>
         <Typography
           level="body-md"
           sx={{
@@ -369,26 +367,32 @@ const ExtractFacesComponent = () => {
             backgroundColor: "#f9fafb",
             borderRadius: 8,
             padding: 3,
+            fontSize: 20,
             textAlign: "center",
           }}
         >
-          <strong>Looking for commercial use or API integration?</strong> <br />
+          <strong>Нужна коммерческая версия или интеграция с API?</strong>{" "}
           <br />
-          We offer scalable <strong>enterprise plans</strong> and
-          high-performance APIs for businesses, startups, and research
-          institutions. Whether you need to process thousands of images daily or
-          require priority support, we’ve got you covered. <br />
           <br />
-          For pricing, API keys, service-level agreements, or technical
-          integration questions — please reach out to us at{" "}
-          <a href="mailto:contact@yourdomain.com" style={{ color: "#0B6BCB" }}>
+          Мы предлагаем масштабируемые <strong>корпоративные тарифы</strong> и
+          высокопроизводительные API для бизнеса, стартапов и исследовательских
+          организаций. Независимо от того, нужно ли вам обрабатывать тысячи
+          изображений в день или требуется приоритетная поддержка — мы поможем.{" "}
+          <br />
+          <br />
+          По вопросам цен, получения API-ключей, соглашений об уровне
+          обслуживания (SLA) или технической интеграции — свяжитесь с нами по
+          адресу{" "}
+          <a href="mailto:morgun2282@gmail.com" style={{ color: "#0B6BCB" }}>
             morgun2282@gmail.com
-          </a>{" "}
-          and we’ll be happy to assist you.
+          </a>
+          , и мы с радостью вам поможем.
         </Typography>
+
         <Divider sx={{ marginBottom: 3 }} />
+
         <Typography level="body-sm" sx={{ fontStyle: "italic", color: "#666" }}>
-          FaceAnalyze — we gonna find all of you.
+          Глубокий анализ лица человека — мы найдём всех.
         </Typography>
       </Container>
     </>

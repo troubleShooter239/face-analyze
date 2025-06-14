@@ -23,92 +23,102 @@ const TermsOfUse = () => {
           level="h1"
           sx={{ fontSize: "3rem", fontWeight: "bold", marginBottom: 1 }}
         >
-          Terms of Use
+          Условия использования
         </Typography>
         <Divider sx={{ marginBottom: 2 }} />
         <div style={{ maxWidth: "800px", textAlign: "start" }}>
           <Typography level="body-lg" sx={{ marginBottom: 2, fontSize: 22 }}>
-            Welcome to FaceAnalyze. By accessing or using our platform, you
-            accept and agree to be bound by these Terms of Use. Please read them
-            carefully. If you do not agree, please do not use our services.
+            Добро пожаловать в Глубокий Анализ Лица Человека. Получая доступ к
+            нашей платформе или используя её, вы принимаете и соглашаетесь с
+            настоящими Условиями использования. Пожалуйста, внимательно
+            прочитайте их. Если вы не согласны — не пользуйтесь нашими услугами.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>1. User Eligibility:</strong> You must be at least 18 years
-            old or have the consent of a legal guardian to use our services. You
-            confirm that all information provided is accurate and truthful.
+            <strong>1. Требования к пользователю:</strong> Вам должно быть не
+            менее 18 лет или вы должны иметь согласие законного представителя
+            для использования наших услуг. Вы подтверждаете, что вся
+            предоставленная информация является точной и достоверной.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>2. Responsible Use:</strong> Users are expected to act
-            responsibly and ethically. You agree not to misuse our service to
-            harm others or for any illegal activity, including but not limited
-            to biometric fraud, identity theft, or harassment.
+            <strong>2. Ответственное использование:</strong> Пользователи
+            обязуются действовать ответственно и этично. Вы соглашаетесь не
+            использовать наш сервис во вред другим людям или для незаконной
+            деятельности, включая, но не ограничиваясь, биометрическим
+            мошенничеством, кражей личности или домогательствами.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>3. Data Collection and Usage:</strong> We may collect facial
-            images, metadata, and usage analytics to deliver, maintain, and
-            improve our service. Data is used in strict accordance with our
-            Privacy Policy.
+            <strong>3. Сбор и использование данных:</strong> Мы можем собирать
+            изображения лиц, метаданные и аналитику использования для
+            предоставления, поддержки и улучшения сервиса. Использование данных
+            осуществляется строго в соответствии с нашей Политикой
+            конфиденциальности.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>4. Facial Recognition Technology:</strong> Our service
-            includes automated analysis using machine learning. While we strive
-            for high accuracy, we do not guarantee 100% correctness and results
-            should not be the sole basis for legal or critical decisions.
+            <strong>4. Технология распознавания лиц:</strong> Наш сервис
+            включает автоматизированный анализ с использованием машинного
+            обучения. Хотя мы стремимся к высокой точности, мы не гарантируем
+            100% правильность результатов, и они не должны быть единственным
+            основанием для юридических или критически важных решений.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>5. Intellectual Property:</strong> All content, models,
-            code, and visualizations are the intellectual property of
-            FaceAnalyze. You agree not to copy, reverse-engineer, or resell our
-            software or datasets without explicit permission.
+            <strong>5. Интеллектуальная собственность:</strong> Весь контент,
+            модели, код и визуализации являются интеллектуальной собственностью
+            Глубокий Анализ Лица Человека. Вы соглашаетесь не копировать, не
+            декомпилировать и не перепродавать наше программное обеспечение или
+            наборы данных без явного разрешения.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>6. Third-Party Integrations:</strong> Our platform may
-            connect with third-party services. We are not responsible for their
-            terms, privacy policies, or content.
+            <strong>6. Интеграция с третьими сторонами:</strong> Наша платформа
+            может взаимодействовать с сервисами третьих сторон. Мы не несем
+            ответственности за их условия, политику конфиденциальности или
+            содержание.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>7. Availability and Downtime:</strong> We strive for 99.9%
-            uptime but make no guarantees. Scheduled maintenance and unexpected
-            outages may occur without prior notice.
+            <strong>7. Доступность и простои:</strong> Мы стремимся к 99.9%
+            времени бесперебойной работы, но не даем гарантий. Плановое
+            обслуживание и неожиданные сбои могут происходить без
+            предварительного уведомления.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>8. Changes to Terms:</strong> We may update these terms
-            occasionally. Continued use of the service implies acceptance of any
-            changes. You are encouraged to review these terms regularly.
+            <strong>8. Изменения условий:</strong> Мы можем периодически
+            обновлять настоящие условия. Продолжение использования сервиса
+            означает принятие всех изменений. Рекомендуем регулярно
+            просматривать текущие условия.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>9. Termination of Access:</strong> FaceAnalyze reserves the
-            right to suspend or terminate your access at any time, with or
-            without cause, especially in cases of suspected abuse or legal
-            violation.
+            <strong>9. Прекращение доступа:</strong> Платформа оставляет за
+            собой право приостановить или прекратить ваш доступ в любое время, с
+            причиной или без, особенно при подозрении на злоупотребление или
+            нарушение закона.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>10. Limitation of Liability:</strong> In no event shall
-            FaceAnalyze be liable for any indirect, incidental, or consequential
-            damages arising from the use or inability to use the service.
+            <strong>10. Ограничение ответственности:</strong> Ни при каких
+            обстоятельствах платформа не несет ответственности за косвенные,
+            случайные или сопутствующие убытки, возникшие в результате
+            использования или невозможности использования сервиса.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>11. Commercial Licensing:</strong> We offer advanced
-            features and higher API limits for commercial users. For enterprise
-            solutions, SDK licensing, or custom integrations, please contact our
-            sales team.
+            <strong>11. Коммерческое лицензирование:</strong> Мы предлагаем
+            расширенные функции и более высокие лимиты API для коммерческих
+            пользователей. Для корпоративных решений, лицензирования SDK или
+            кастомных интеграций, пожалуйста, свяжитесь с нашей командой продаж.
           </Typography>
 
           <Typography level="body-md" sx={{ marginBottom: 1, fontSize: 20 }}>
-            <strong>12. Contact and Support:</strong> For any legal inquiries,
-            data deletion requests, or commercial partnership discussions, email
-            us at{" "}
+            <strong>12. Контакты и поддержка:</strong> Для юридических вопросов,
+            запросов на удаление данных или коммерческого сотрудничества
+            напишите нам на{" "}
             <a href="mailto:support@faceanalyze.ai">support@faceanalyze.ai</a>.
           </Typography>
 
@@ -121,11 +131,12 @@ const TermsOfUse = () => {
               fontWeight: 600,
             }}
           >
-            FaceAnalyze offers powerful face verification APIs, real-time
-            anti-spoofing, and identity detection technology trusted by
-            professionals around the world. Whether you're building fintech
-            verification systems, HR onboarding tools, or smart surveillance,
-            we're here to support your growth.
+            Глубокий анализ лица человека предлагает мощные API для верификации
+            лиц, защиту от подделок в реальном времени и технологии
+            идентификации, которым доверяют профессионалы по всему миру.
+            Создаете ли вы системы верификации для финтеха, инструменты для
+            адаптации сотрудников или умное видеонаблюдение — мы готовы
+            поддержать ваш рост.
           </Typography>
 
           <Typography
@@ -137,8 +148,9 @@ const TermsOfUse = () => {
               fontWeight: 600,
             }}
           >
-            Interested in commercial use? Explore our Pro plans with SLA
-            guarantees, custom model support, and bulk pricing. Reach out at{" "}
+            Интересуетесь коммерческим использованием? Ознакомьтесь с нашими
+            тарифами Pro с гарантиями SLA, поддержкой кастомных моделей и
+            оптовыми ценами. Свяжитесь с нами по адресу{" "}
             <a
               href="mailto:support@faceanalyze.ai"
               style={{ color: "#0B6BCB" }}
